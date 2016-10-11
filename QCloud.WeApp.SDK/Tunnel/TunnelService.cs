@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -69,15 +71,17 @@ namespace QCloud.WeApp.SDK
 
             tunnel = await tunnelApi.RequestConnect("kdi309c32", "http://csharp-demo.qcloud.la/tunnel");
 
-            handler.OnTunnelRequest(tunnel, user);
-
-            Response.WriteJson(new {
+            Response.WriteJson(new
+            {
                 url = tunnel.ConnectUrl
             });
+
+            handler.OnTunnelRequest(tunnel, user);
         }
 
         private async Task HandlePost(ITunnelHandler handler, TunnelHandleOptions options)
         {
+            Request.SaveAs($"C:\\requests\\{DateTime.Today.ToString("yyyyMMdd_HH_mm_ss")}", true);
             throw new NotImplementedException();
         }
     }

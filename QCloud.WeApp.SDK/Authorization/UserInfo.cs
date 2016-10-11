@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 
 namespace QCloud.WeApp.SDK
 {
+    [JsonObject]
     public class UserInfo
     {
         [JsonProperty("openId")]
