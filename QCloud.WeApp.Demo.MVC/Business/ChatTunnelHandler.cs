@@ -44,6 +44,7 @@ namespace QCloud.WeApp.Demo.MVC.Business
         {
             connectedTunnels.Add(tunnel);
             Broadcast("people", new { total = connectedTunnels.Count, enter = userMap[tunnel.Id] });
+            tunnel.Emit("hello");
         }
 
         /// <summary>

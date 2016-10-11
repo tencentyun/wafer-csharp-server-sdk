@@ -26,8 +26,8 @@ namespace QCloud.WeApp.SDK
             {
                 throw new ArgumentNullException("response", "初始化登录服务时，response 不能为 null");
             }
-            this.Request = request;
-            this.Response = response;
+            Request = request;
+            Response = response;
         }
 
         /// <summary>

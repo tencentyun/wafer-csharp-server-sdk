@@ -10,33 +10,42 @@ using System.Web;
 
 namespace QCloud.WeApp.SDK
 {
-    public class TunnelService
+    /// <summary>
+    /// 提供 WebSocket 信道服务
+    /// </summary>
+    public partial class TunnelService
     {
         private HttpRequestBase Request;
         private HttpResponseBase Response;
 
         /// <summary>
-        /// 提供隧道服务
+        /// 提供 WebSocket 信道服务
         /// </summary>
         public TunnelService(HttpRequestBase request, HttpResponseBase response)
         {
             if (request == null)
             {
-                throw new ArgumentNullException("request", "初始化登录服务时，request 不能为 null");
+                throw new ArgumentNullException("request", "初始化 WebSocket 信道服务时，request 不能为 null");
             }
             if (response == null)
             {
-                throw new ArgumentNullException("response", "初始化登录服务时，response 不能为 null");
+                throw new ArgumentNullException("response", "初始化 WebSocket 信道服务时，response 不能为 null");
             }
-            this.Request = request;
-            this.Response = response;
+            Request = request;
+            Response = response;
         }
 
         /// <summary>
-        /// 提供隧道服务
+        /// 提供 WebSocket 信道服务
         /// </summary>
         public TunnelService(HttpRequest request, HttpResponse response) : this(new HttpRequestWrapper(request), new HttpResponseWrapper(response)) { }
         
+        /// <summary>
+        /// 处理 WebSocket 信道请求
+        /// </summary>
+        /// <param name="handler">提供 WebSocket 信道处理器处理信道事件</param>
+        /// <param name="options">可选，配置处理选项</param>
+        /// <returns>返回任务进行跟踪，任务完成表示信道处理完成</returns>
         public async Task Handle(ITunnelHandler handler, TunnelHandleOptions options = null)
         {
             if (Request.HttpMethod.ToUpper() == "GET")
@@ -48,41 +57,6 @@ namespace QCloud.WeApp.SDK
             {
                 await HandlePost(handler, options);
             }
-        }
-
-        private async Task HandleGet(ITunnelHandler handler, TunnelHandleOptions options)
-        {
-            TunnelAPI tunnelApi = new TunnelAPI();
-
-            UserInfo user = null;
-            Tunnel tunnel = null;
-
-            if (options?.CheckLogin == true)
-            {
-                try
-                {
-                    LoginService loginService = new LoginService(Request, Response);
-                    user = await loginService.Check();
-                }
-                catch {
-                    return;
-                }
-            }
-
-            tunnel = await tunnelApi.RequestConnect("kdi309c32", "http://csharp-demo.qcloud.la/tunnel");
-
-            Response.WriteJson(new
-            {
-                url = tunnel.ConnectUrl
-            });
-
-            handler.OnTunnelRequest(tunnel, user);
-        }
-
-        private async Task HandlePost(ITunnelHandler handler, TunnelHandleOptions options)
-        {
-            Request.SaveAs($"C:\\requests\\{DateTime.Today.ToString("yyyyMMdd_HH_mm_ss")}", true);
-            throw new NotImplementedException();
-        }
+        }        
     }
 }

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,11 +16,11 @@ namespace QCloud.WeApp.SDK
         /// <summary>
         /// 从配置文件读取 API 访问地址
         /// </summary>
-        private static string APIEndpoint
+        private string APIEndpoint
         {
             get
             {
-                return "https://ws.qcloud.com";
+                return ConfigurationManager.CurrentConfiguration.TunnelServerUrl;
             }
         }
 
@@ -33,34 +34,25 @@ namespace QCloud.WeApp.SDK
             };
         }
 
+        public async Task EmitMessage(string type, object content)
+        {
+
+        }
+
         /// <summary>
         /// 通用 API 请求方法
         /// </summary>
-        /// <param name="apiName">API 名称</param>
-        /// <param name="apiParams">API 参数</param>
+        /// <param name="api">API 名称</param>
+        /// <param name="param">API 参数</param>
         /// <returns>API 返回的数据</returns>
-        public async Task<dynamic> Request(string apiPath, string apiName, Object apiParams)
+        public async Task<dynamic> Request(string path, string api, object param)
         {
-            HttpClient http;
-            bool fiddlerProxy = false;
-
-            if (fiddlerProxy)
-            {
-                http = new HttpClient(new HttpClientHandler()
-                {
-                    // use fiddler proxy
-                    Proxy = new WebProxy("127.0.0.1", 8888)
-                });
-            }
-            else
-            {
-                http = new HttpClient();
-            }
+            var http = Http.CreateClient();
 
             HttpResponseMessage response = null;
             try
             {
-                response = await http.PostAsync(APIEndpoint + apiPath, BuildRequestBody(apiName, apiParams));
+                response = await http.PostAsync(APIEndpoint + path, BuildRequestBody(api, param));
 
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
@@ -98,13 +90,21 @@ namespace QCloud.WeApp.SDK
             }
         }
 
-        public StringContent BuildRequestBody(String api, Object param, string signature = null)
+        public StringContent BuildRequestBody(string api, object param)
         {
+            var signature = Signature(api, param);
             var stringBody = JsonConvert.SerializeObject(new { api, param, signature });
             Debug.WriteLine("==============Request==============");
             Debug.WriteLine(stringBody);
             Debug.WriteLine("");
             return new StringContent(stringBody, new UTF8Encoding(false));
         }
+
+        public string Signature(string api, object param)
+        {
+            string input = JsonConvert.SerializeObject(new { api, param });
+            return input.ComputeSignature();
+        }
+        
     }
 }

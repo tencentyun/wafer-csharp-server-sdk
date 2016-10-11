@@ -26,7 +26,7 @@ namespace QCloud.WeApp.SDK
 
         internal string ConnectUrl { get; set; }
         
-        public void Emit(string type, object message) {
+        public void Emit(string type, object message = null) {
         }
     }
 }

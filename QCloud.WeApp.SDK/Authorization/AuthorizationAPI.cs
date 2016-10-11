@@ -18,11 +18,11 @@ namespace QCloud.WeApp.SDK
         /// <summary>
         /// 从配置文件读取 API 访问地址
         /// </summary>
-        private static string APIEndpoint
+        private string APIEndpoint
         {
             get
             {
-                return "http://10.104.175.21/mina_auth/";
+                return ConfigurationManager.CurrentConfiguration.AuthServerUrl;
             }
         }
 
@@ -66,21 +66,7 @@ namespace QCloud.WeApp.SDK
         /// <returns>API 返回的数据</returns>
         public async Task<dynamic> Request(string apiName, object apiParams)
         {
-            bool proxyByFiddler = false;
-            HttpClient http;
-
-            if (proxyByFiddler)
-            {
-                http = new HttpClient(new HttpClientHandler()
-                {
-                    // use fiddler proxy
-                    Proxy = new WebProxy("127.0.0.1", 8888)
-                });
-            }
-            else
-            {
-                http = new HttpClient();
-            }
+            var http = Http.CreateClient();
 
             HttpResponseMessage response = null;
             try

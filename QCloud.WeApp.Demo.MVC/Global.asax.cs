@@ -16,6 +16,14 @@ namespace QCloud.WeApp.Demo.MVC
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            SDK.ConfigurationManager.Setup(new SDK.Configuration()
+            {
+                ServerHost = "csharp-demo.qcloud.la",
+                AuthServerUrl = "http://10.104.175.21/mina_auth/",
+                SecretKey = "flydeGe&g^2",
+                TunnelServerUrl = "https://ws.qcloud.com"
+            });
         }
     }
 }
