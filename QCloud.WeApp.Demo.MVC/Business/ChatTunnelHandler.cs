@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 namespace QCloud.WeApp.Demo.MVC.Business
 {
     /// <summary>
-    /// 实现隧道处理器来处理隧道消息
+    /// 实现 WebSocket 信道处理器
+    /// 本示例配合客户端 Demo 实现一个简单的聊天室功能
     /// </summary>
-    class TunnelHandler : ITunnelHandler
+    class ChatTunnelHandler : ITunnelHandler
     {
         /// <summary>
         /// 记录 WebSocket 信道对应的用户。在实际的业务中，应该使用数据库进行存储跟踪，这里作为示例只是演示其作用
@@ -50,8 +51,8 @@ namespace QCloud.WeApp.Demo.MVC.Business
         /// 客户端推送消息到 WebSocket 信道服务器上后，会调用该方法，此时可以处理信道的消息。
         /// 在本示例，我们处理 "speak" 类型的消息，该消息表示有用户发言。我们把这个发言的信息广播到所有在线的 WebSocket 信道上
         /// </summary>
-        /// <param name="tunnel"></param>
-        /// <param name="message"></param>
+        /// <param name="tunnel">发送消息的信道</param>
+        /// <param name="message">发送的消息数据</param>
         void ITunnelHandler.OnTunnelMessage(Tunnel tunnel, TunnelMessage message)
         {
             switch(message.Type)
@@ -65,9 +66,9 @@ namespace QCloud.WeApp.Demo.MVC.Business
 
         /// <summary>
         /// 实现 OnTunnelClose 方法
-        /// 客户端断开 WebSocket 信道后，会调用该方法，此时可以进行清理及通知操作
+        /// 客户端关闭 WebSocket 信道或者被信道服务器判断为已断开后，会调用该方法，此时可以进行清理及通知操作
         /// </summary>
-        /// <param name="tunnel"></param>
+        /// <param name="tunnel">已关闭的信道</param>
         void ITunnelHandler.OnTunnelClose(Tunnel tunnel)
         {
             UserInfo leaveUser = null;
