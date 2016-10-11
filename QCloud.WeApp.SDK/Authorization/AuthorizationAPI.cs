@@ -36,12 +36,11 @@ namespace QCloud.WeApp.SDK
         public async Task<LoginResult> Login(string code, string encryptData)
         {
             var result = await Request("qcloud.cam.id_skey", new { code, encrypt_data = encryptData });
-            var userInfo = result.userInfo;
             return new LoginResult()
             {
                 Id = result.id,
                 Skey = result.skey,
-                UserInfo = new UserInfo() { }
+                UserInfo = UserInfo.BuildFromJson(result.user_info)
             };
         }
 
@@ -56,7 +55,7 @@ namespace QCloud.WeApp.SDK
             var result = await Request("qcloud.cam.auth", new { id, skey });
             return new CheckLoginResult()
             {
-                UserInfo = new UserInfo() { }
+                UserInfo = UserInfo.BuildFromJson(result.user_info)
             };
         }
 
@@ -99,6 +98,9 @@ namespace QCloud.WeApp.SDK
 
             var responseBody = await response.Content.ReadAsStringAsync();
 
+            Debug.WriteLine("==============Response==============");
+            Debug.WriteLine(responseBody);
+            Debug.WriteLine("");
             try
             {
                 dynamic body = JsonConvert.DeserializeObject(responseBody);
@@ -137,7 +139,10 @@ namespace QCloud.WeApp.SDK
                     @interfaceName = apiName,
                     @para = apiParams
                 }
-            }, Formatting.Indented);
+            });
+            Debug.WriteLine("==============Request==============");
+            Debug.WriteLine(stringBody);
+            Debug.WriteLine("");
             return new StringContent(stringBody, new UTF8Encoding(false));
         }
     }

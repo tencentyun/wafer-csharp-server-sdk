@@ -23,7 +23,7 @@ namespace QCloud.WeApp.SDK
         /// <summary>
         /// 表示会话过期的错误
         /// </summary>
-        public const string ERR_SESSION_EXPIRED = "ERR_SESSION_EXPIRED";
+        public const string ERR_INVALID_SESSION = "ERR_INVALID_SESSION";
 
         /// <summary>
         /// 表示检查登录态失败

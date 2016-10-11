@@ -53,12 +53,20 @@
     <Compile Include="Authorization\Constants.cs" />
     <Compile Include="Authorization\LoginResult.cs" />
     <Compile Include="Authorization\LoginServiceException.cs" />
+    <Compile Include="Configration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Authorization\UserInfo.cs" />
+    <Compile Include="Tunnel\ITunnerHandler.cs" />
+    <Compile Include="Tunnel\Tunnel.cs" />
+    <Compile Include="Tunnel\TunnelAPI.cs" />
+    <Compile Include="Tunnel\TunnelHandleOptions.cs" />
+    <Compile Include="Tunnel\TunnelMessage.cs" />
+    <Compile Include="Tunnel\TunnelService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -68,12 +68,20 @@ namespace QCloud.WeApp.SDK
         /// <summary>
         /// 检查当前请求是否包含已登录的会话，如果已登录，会返回用户信息，否则将抛出异常
         /// </summary>
+        /// <param name="outputError">如果指定 outputError 为 false，则不会输出登录</param>
         /// <returns>用户信息</returns>
-        public async Task<UserInfo> CheckLogin()
+        public async Task<UserInfo> Check(bool outputError = true)
         {
-
-            var id = GetHeader(Constants.WX_HEADER_ID);
-            var skey = GetHeader(Constants.WX_HEADER_SKEY);
+            string id, skey;
+            try
+            {
+                id = GetHeader(Constants.WX_HEADER_ID, outputError);
+                skey = GetHeader(Constants.WX_HEADER_SKEY, outputError);
+            }
+            catch (Exception e) {
+                if (outputError) throw e;
+                else return null;
+            }
 
             CheckLoginResult checkLoginResult = null;
 
@@ -85,20 +93,29 @@ namespace QCloud.WeApp.SDK
             catch (Exception apiError)
             {
                 var error = new LoginServiceException(Constants.ERR_CHECK_LOGIN_FAILED, apiError.Message, apiError);
-                Response.WriteJson(this.JsonForError(error));
-                throw error;
+                if (outputError)
+                {
+                    Response.WriteJson(this.JsonForError(error));
+                    throw error;
+                } else
+                {
+                    return null;
+                }
             }
             return checkLoginResult.UserInfo;
         }
 
-        private string GetHeader(string headerName)
+        private string GetHeader(string headerName, bool outputError = true)
         {
             var headerValue = Request.Headers[headerName];
 
             if (String.IsNullOrEmpty(headerValue))
             {
-                var error = new ArgumentNullException(headerName, $"请求头不包含 {headerName}，请配合客户端 SDK 使用");
-                Response.WriteJson(JsonForError(error));
+                var error = new LoginServiceException(Constants.ERR_INVALID_SESSION, $"请求头不包含 {headerName}，请配使用户端 SDK 登陆后再进行请求");
+                if (outputError)
+                {
+                    Response.WriteJson(JsonForError(error));
+                }
                 throw error;
             }
 
