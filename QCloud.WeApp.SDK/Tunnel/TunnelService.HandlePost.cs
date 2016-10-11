@@ -28,11 +28,11 @@ namespace QCloud.WeApp.SDK
             try
             {
                 var bodyDefination = new {
-                    data = new {
-                        tunnelIds = new string[0],
+                    data = new string[0].Select(x => new {
+                        tunnelId = string.Empty,
                         type = string.Empty,
                         content = string.Empty
-                    },
+                    }),
                     signature = string.Empty
                 };
 
@@ -46,7 +46,28 @@ namespace QCloud.WeApp.SDK
                     return;
                 }
 
-
+                foreach(var packet in data)
+                {
+                    var tunnel = Tunnel.GetById(packet.tunnelId);
+                    try
+                    {
+                        switch (packet.type)
+                        {
+                            case "connect":
+                                handler.OnTunnelConnect(tunnel);
+                                break;
+                            case "message":
+                                handler.OnTunnelMessage(tunnel, new TunnelMessage(packet.content));
+                                break;
+                            case "close":
+                                handler.OnTunnelClose(tunnel);
+                                break;
+                        }
+                    }
+                    catch {
+                        continue;
+                    }
+                }
             }
             catch (JsonException)
             {

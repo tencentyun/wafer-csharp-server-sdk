@@ -9,7 +9,23 @@ namespace QCloud.WeApp.SDK
 {
     public class TunnelMessage
     {
+        internal TunnelMessage(string messageRaw)
+        {
+            try
+            {
+                dynamic resolved = JsonConvert.DeserializeObject(messageRaw);
+                Type = resolved.type;
+                Content = resolved.content;
+            }
+            catch
+            {
+                Type = "UnknownRaw";
+                Content = messageRaw;
+            }
+        }
+
         public string Type { get; internal set; }
-        public dynamic Message { get; internal set; }
+
+        public dynamic Content { get; internal set; }
     }
 }
