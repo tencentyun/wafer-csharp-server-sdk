@@ -32,7 +32,7 @@ namespace QCloud.WeApp.Demo.MVC.Controllers
             await tunnelService.Handle(
 
                 // 需要自己实现隧道消息处理器，TunnelHandler 是一个实现的范例，详情请看 TunnelHandler 的实现源码
-                handler: new ChatingTunnelHandler(), 
+                handler: new ChatTunnelHandler(), 
 
                 // 配置是可选的，配置 CheckLogin 为 true 的话，会在隧道建立之前获取用户信息，以便业务将隧道和用户关联起来
                 options: new TunnelHandleOptions() { CheckLogin = true }
