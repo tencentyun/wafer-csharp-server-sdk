@@ -68,15 +68,31 @@ namespace QCloud.WeApp.SDK
                         continue;
                     }
                 }
+
+                Response.WriteJson(new {
+                    code = 0,
+                    message = "OK"
+                });
             }
             catch (JsonException)
             {
+                Response.WriteJson(new
+                {
+                    code = 9001,
+                    message = "Cant not parse the request body: invalid json"
+                });
                 LogRequest(requestBody, "Error: Invalid Json");
                 return;
             }
             catch (Exception)
             {
+                Response.WriteJson(new
+                {
+                    code = 10001,
+                    message = "Unexpected Error"
+                });
                 LogRequest(requestBody, "Error: Unknown Data");
+                return;
             }
 
         }

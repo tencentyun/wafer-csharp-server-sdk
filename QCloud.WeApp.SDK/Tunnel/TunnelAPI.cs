@@ -34,9 +34,21 @@ namespace QCloud.WeApp.SDK
             };
         }
 
-        public async Task EmitMessage(string type, object content)
+        public async Task<bool> EmitMessage(IEnumerable<Tunnel> tunnels, string type, object content = null)
         {
-
+            var param = new {
+                tunnelIds = tunnels.Select(x => x.Id),
+                content = JsonConvert.SerializeObject(new { type, content })
+            };
+            try
+            {
+                var result = await Request("/ws/post", "PostMessage", param);
+                return result.code == 0;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
