@@ -60,7 +60,7 @@ namespace QCloud.WeApp.Demo.MVC.Business
             {
                 // 目前只处理 "speak" 类型的消息，只要有客户端说话，就把这个消息广播到所有信道上
                 case "speak":
-                    Broadcast("speak", new { who = userMap[tunnel.Id], word = message.Message.word });
+                    Broadcast("speak", new { who = userMap[tunnel.Id], word = message.Content.word });
                     break;
             }
         }
