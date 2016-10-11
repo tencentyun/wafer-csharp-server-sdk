@@ -57,11 +57,17 @@ namespace QCloud.WeApp.SDK
 
             if (options?.CheckLogin == true)
             {
-                LoginService loginService = new LoginService(Request, Response);
-                user = await loginService.Check(outputError: false);
+                try
+                {
+                    LoginService loginService = new LoginService(Request, Response);
+                    user = await loginService.Check();
+                }
+                catch {
+                    return;
+                }
             }
 
-            tunnel = await tunnelApi.RequestConnect("kdi309c32", "https://ws-cshapr.qcloud.la/tunnel");
+            tunnel = await tunnelApi.RequestConnect("kdi309c32", "http://csharp-demo.qcloud.la/tunnel");
 
             handler.OnTunnelRequest(tunnel, user);
 

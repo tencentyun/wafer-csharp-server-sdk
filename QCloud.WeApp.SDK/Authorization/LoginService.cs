@@ -70,18 +70,10 @@ namespace QCloud.WeApp.SDK
         /// </summary>
         /// <param name="outputError">如果指定 outputError 为 false，则不会输出登录</param>
         /// <returns>用户信息</returns>
-        public async Task<UserInfo> Check(bool outputError = true)
+        public async Task<UserInfo> Check()
         {
-            string id, skey;
-            try
-            {
-                id = GetHeader(Constants.WX_HEADER_ID, outputError);
-                skey = GetHeader(Constants.WX_HEADER_SKEY, outputError);
-            }
-            catch (Exception e) {
-                if (outputError) throw e;
-                else return null;
-            }
+            string id = GetHeader(Constants.WX_HEADER_ID);
+            string skey = GetHeader(Constants.WX_HEADER_SKEY);
 
             CheckLoginResult checkLoginResult = null;
 
@@ -92,30 +84,33 @@ namespace QCloud.WeApp.SDK
             }
             catch (Exception apiError)
             {
-                var error = new LoginServiceException(Constants.ERR_CHECK_LOGIN_FAILED, apiError.Message, apiError);
-                if (outputError)
+                LoginServiceException error = null;
+                if (apiError is AuthorizationAPIException)
                 {
-                    Response.WriteJson(this.JsonForError(error));
-                    throw error;
-                } else
-                {
-                    return null;
+                    AuthorizationAPIException authError = (AuthorizationAPIException)apiError;
+                    if (authError.Code == 60011 || authError.Code == 60012)
+                    {
+                        error = new LoginServiceException(Constants.ERR_INVALID_SESSION, authError.Message, authError);
+                    }
                 }
+                if (error == null)
+                {
+                    error = new LoginServiceException(Constants.ERR_CHECK_LOGIN_FAILED, apiError.Message, apiError);
+                }
+                Response.WriteJson(this.JsonForError(error));
+                throw error;
             }
             return checkLoginResult.UserInfo;
         }
 
-        private string GetHeader(string headerName, bool outputError = true)
+        private string GetHeader(string headerName)
         {
             var headerValue = Request.Headers[headerName];
 
             if (String.IsNullOrEmpty(headerValue))
             {
                 var error = new LoginServiceException(Constants.ERR_INVALID_SESSION, $"请求头不包含 {headerName}，请配使用户端 SDK 登陆后再进行请求");
-                if (outputError)
-                {
-                    Response.WriteJson(JsonForError(error));
-                }
+                Response.WriteJson(JsonForError(error));
                 throw error;
             }
 

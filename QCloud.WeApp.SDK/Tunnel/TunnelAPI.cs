@@ -42,9 +42,9 @@ namespace QCloud.WeApp.SDK
         public async Task<dynamic> Request(string apiPath, string apiName, Object apiParams)
         {
             HttpClient http;
-            bool debug = true;
+            bool fiddlerProxy = false;
 
-            if (debug)
+            if (fiddlerProxy)
             {
                 http = new HttpClient(new HttpClientHandler()
                 {

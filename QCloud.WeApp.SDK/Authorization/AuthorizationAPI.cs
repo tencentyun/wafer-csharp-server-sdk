@@ -22,8 +22,7 @@ namespace QCloud.WeApp.SDK
         {
             get
             {
-                var endpoint = System.Configuration.ConfigurationManager.AppSettings["qcloud.auth.api.endpoint"];
-                return endpoint != null ? endpoint : "http://mina.auth.com";
+                return "http://10.104.175.21/mina_auth/";
             }
         }
 
@@ -67,9 +66,10 @@ namespace QCloud.WeApp.SDK
         /// <returns>API 返回的数据</returns>
         public async Task<dynamic> Request(string apiName, object apiParams)
         {
+            bool proxyByFiddler = false;
             HttpClient http;
 
-            if (System.Configuration.ConfigurationManager.AppSettings["DEBUG_SDK"] == "true")
+            if (proxyByFiddler)
             {
                 http = new HttpClient(new HttpClientHandler()
                 {
@@ -107,7 +107,7 @@ namespace QCloud.WeApp.SDK
 
                 if (body.returnCode != 0)
                 {
-                    throw new Exception($"鉴权服务调用失败：#{body.returnCode} - ${body.returnMessage}");
+                    throw new AuthorizationAPIException($"鉴权服务调用失败：#{body.returnCode} - ${body.returnMessage}") { Code = body.returnCode };
                 }
 
                 return body.returnData;
