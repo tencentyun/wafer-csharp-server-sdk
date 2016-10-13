@@ -32,9 +32,9 @@ namespace QCloud.WeApp.SDK
         /// <param name="code">微信登录后得到的 code</param>
         /// <param name="encryptData">微信获取用户数据后得到的加密数据</param>
         /// <returns>返回登录的结果，包含会话信息以及用户信息</returns>
-        public async Task<LoginResult> Login(string code, string encryptData)
+        public LoginResult Login(string code, string encryptData)
         {
-            var result = await Request("qcloud.cam.id_skey", new { code, encrypt_data = encryptData });
+            var result = Request("qcloud.cam.id_skey", new { code, encrypt_data = encryptData });
             return new LoginResult()
             {
                 Id = result.id,
@@ -49,9 +49,9 @@ namespace QCloud.WeApp.SDK
         /// <param name="id">会话 ID</param>
         /// <param name="skey">会话 SKey</param>
         /// <returns>返回检查登录结果，包含用户信息</returns>
-        public async Task<CheckLoginResult> CheckLogin(string id, string skey)
+        public CheckLoginResult CheckLogin(string id, string skey)
         {
-            var result = await Request("qcloud.cam.auth", new { id, skey });
+            var result = Request("qcloud.cam.auth", new { id, skey });
             return new CheckLoginResult()
             {
                 UserInfo = UserInfo.BuildFromJson(result.user_info)
@@ -64,32 +64,24 @@ namespace QCloud.WeApp.SDK
         /// <param name="apiName">API 名称</param>
         /// <param name="apiParams">API 参数</param>
         /// <returns>API 返回的数据</returns>
-        public async Task<dynamic> Request(string apiName, object apiParams)
+        public dynamic Request(string apiName, object apiParams)
         {
-            var http = Http.CreateClient();
 
-            HttpResponseMessage response = null;
+            string response = null;
             try
             {
-                response = await http.PostAsync(APIEndpoint, BuildRequestBody(apiName, apiParams));
-
-                if (response.StatusCode != HttpStatusCode.OK)
-                {
-                    throw new HttpRequestException("错误的 HTTP 响应：" + response.StatusCode);
-                }
+                response = Http.Post(APIEndpoint, BuildRequestBody(apiName, apiParams));
             }
             catch (Exception error) {
                 throw new HttpRequestException("请求鉴权 API 失败，网络异常或鉴权服务器错误", error);
             }
-
-            var responseBody = await response.Content.ReadAsStringAsync();
-
-            Debug.WriteLine("==============Response==============");
-            Debug.WriteLine(responseBody);
+            
+            Debug.WriteLine("==============Auth Response==============");
+            Debug.WriteLine(response);
             Debug.WriteLine("");
             try
             {
-                dynamic body = JsonConvert.DeserializeObject(responseBody);
+                dynamic body = JsonConvert.DeserializeObject(response);
 
                 if (body.returnCode != 0)
                 {
@@ -114,9 +106,9 @@ namespace QCloud.WeApp.SDK
         /// <param name="apiName">API 名称</param>
         /// <param name="apiParams">API 参数</param>
         /// <returns></returns>
-        private StringContent BuildRequestBody(string apiName, object apiParams)
+        private string BuildRequestBody(string apiName, object apiParams)
         {
-            var stringBody = JsonConvert.SerializeObject(new
+            var body = JsonConvert.SerializeObject(new
             {
                 @version = 1,
                 @componentName = "MA",
@@ -126,10 +118,10 @@ namespace QCloud.WeApp.SDK
                     @para = apiParams
                 }
             });
-            Debug.WriteLine("==============Request==============");
-            Debug.WriteLine(stringBody);
+            Debug.WriteLine("==============Auth Request==============");
+            Debug.WriteLine(body);
             Debug.WriteLine("");
-            return new StringContent(stringBody, new UTF8Encoding(false));
+            return body;
         }
     }
 }

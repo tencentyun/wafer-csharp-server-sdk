@@ -51,12 +51,15 @@
     <Compile Include="Authorization\AuthorizationAPI.cs" />
     <Compile Include="Authorization\AuthorizationAPIException.cs" />
     <Compile Include="Authorization\CheckLoginResult.cs" />
-    <Compile Include="Authorization\HttpSupport.cs" />
+    <Compile Include="Tunnel\TunnelRoom.cs" />
+    <Compile Include="Tunnel\Signature.cs" />
+    <Compile Include="Http.cs" />
     <Compile Include="Authorization\LoginService.cs" />
     <Compile Include="Authorization\Constants.cs" />
     <Compile Include="Authorization\LoginResult.cs" />
     <Compile Include="Authorization\LoginServiceException.cs" />
-    <Compile Include="Configration.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="ConfigurationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Authorization\UserInfo.cs" />
     <Compile Include="Tunnel\ITunnerHandler.cs" />
@@ -64,6 +67,8 @@
     <Compile Include="Tunnel\TunnelAPI.cs" />
     <Compile Include="Tunnel\TunnelHandleOptions.cs" />
     <Compile Include="Tunnel\TunnelMessage.cs" />
+    <Compile Include="Tunnel\TunnelService.HandlePost.cs" />
+    <Compile Include="Tunnel\TunnelService.HandleGet.cs" />
     <Compile Include="Tunnel\TunnelService.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -40,7 +40,7 @@ namespace QCloud.WeApp.SDK
         /// 无论登录成功与否，会直接进行 HTTP 响应登录结果，使用该方法后无需再进行 HTTP 响应。<para />
         /// 需要获取登陆结果的，可以直接 await 登录方法的返回值。需要获取登陆错误的，请直接使用 try-catch 捕获。
         /// </summary>
-        public async Task<UserInfo> Login()
+        public UserInfo Login()
         {
             var code = GetHeader(Constants.WX_HEADER_CODE);
             var encryptData = GetHeader(Constants.WX_HEADER_ENCRYPT_DATA);
@@ -50,7 +50,7 @@ namespace QCloud.WeApp.SDK
             try
             {
                 var api = new AuthorizationAPI();
-                loginResult = await api.Login(code, encryptData);
+                loginResult = api.Login(code, encryptData);
             }
             catch (Exception apiError)
             {
@@ -70,7 +70,7 @@ namespace QCloud.WeApp.SDK
         /// </summary>
         /// <param name="outputError">如果指定 outputError 为 false，则不会输出登录</param>
         /// <returns>用户信息</returns>
-        public async Task<UserInfo> Check()
+        public UserInfo Check()
         {
             string id = GetHeader(Constants.WX_HEADER_ID);
             string skey = GetHeader(Constants.WX_HEADER_SKEY);
@@ -80,7 +80,7 @@ namespace QCloud.WeApp.SDK
             try
             {
                 var api = new AuthorizationAPI();
-                checkLoginResult = await api.CheckLogin(id, skey);
+                checkLoginResult = api.CheckLogin(id, skey);
             }
             catch (Exception apiError)
             {

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -24,29 +25,44 @@ namespace QCloud.WeApp.SDK
             }
         }
 
-        public async Task<Tunnel> RequestConnect(string skey, string receiveUrl)
+        public Tunnel RequestConnect(string skey, string receiveUrl)
         {
-            var result = await Request("/get/wsurl", "RequestConnect", new { skey, receiveUrl });
+            var result = Request("/get/wsurl?uin=208852691", new { skey, receiveUrl, protocolType = "wss" });
+            string tunnelId = result.tunnelId;
+            string connectUrl = result.connectUrl;
+
+            // 强制 wss 协议
+            connectUrl = connectUrl.Replace("ws://", "wss://");
+
             return new Tunnel()
             {
-                Id = result.tunnelId,
-                ConnectUrl = result.connectUrl
+                Id = tunnelId,
+                ConnectUrl = connectUrl
             };
         }
 
-        public async Task<bool> EmitMessage(IEnumerable<Tunnel> tunnels, string type, object content = null)
+        public bool EmitMessage(IEnumerable<string> tunnelIds, string messageType, object messageContent = null)
         {
-            var param = new {
-                tunnelIds = tunnels.Select(x => x.Id),
-                content = JsonConvert.SerializeObject(new { type, content })
+            return EmitPacket(tunnelIds, "message", new { type = messageType, content = messageContent });
+        }
+
+        public bool EmitPacket(IEnumerable<string> tunnelIds, string packetType, object packetContent)
+        {
+            if (tunnelIds.Count() == 0) return true;
+            var data = new object[] {
+                new {
+                    type = packetType,
+                    tunnelIds,
+                    content = packetContent == null ? null : JsonConvert.SerializeObject(packetContent)
+                }
             };
             try
             {
-                var result = await Request("/ws/post", "PostMessage", param);
+                var result = Request("/ws/push", data);
                 return result.code == 0;
             }
-            catch
-            {
+            catch (Exception e) {
+                Debug.WriteLine(e);
                 return false;
             }
         }
@@ -55,35 +71,28 @@ namespace QCloud.WeApp.SDK
         /// 通用 API 请求方法
         /// </summary>
         /// <param name="api">API 名称</param>
-        /// <param name="param">API 参数</param>
+        /// <param name="data">API 参数</param>
         /// <returns>API 返回的数据</returns>
-        public async Task<dynamic> Request(string path, string api, object param)
+        public dynamic Request(string path, object data)
         {
-            var http = Http.CreateClient();
+            string url = APIEndpoint + path;
+            string response;
 
-            HttpResponseMessage response = null;
             try
             {
-                response = await http.PostAsync(APIEndpoint + path, BuildRequestBody(api, param));
-
-                if (response.StatusCode != HttpStatusCode.OK)
-                {
-                    throw new HttpRequestException("错误的 HTTP 响应：" + response.StatusCode);
-                }
+                response = Http.Post(url, BuildRequestBody(data));
             }
-            catch (Exception error)
+            catch (Exception httpException)
             {
-                throw new HttpRequestException("请求信道 API 失败，网络异常或鉴权服务器错误", error);
+                throw new HttpRequestException("请求信道 API 失败，网络异常或鉴权服务器错误", httpException);
             }
 
-            var responseBody = await response.Content.ReadAsStringAsync();
-
-            Debug.WriteLine("==============Response==============");
-            Debug.WriteLine(responseBody);
+            Debug.WriteLine("==============Tunnel Response==============");
+            Debug.WriteLine(response);
             Debug.WriteLine("");
             try
             {
-                dynamic body = JsonConvert.DeserializeObject(responseBody);
+                dynamic body = JsonConvert.DeserializeObject(response);
 
                 if (body.code != 0)
                 {
@@ -102,19 +111,19 @@ namespace QCloud.WeApp.SDK
             }
         }
 
-        public StringContent BuildRequestBody(string api, object param)
+        public string BuildRequestBody(object data)
         {
-            var signature = Signature(api, param);
-            var stringBody = JsonConvert.SerializeObject(new { api, param, signature });
-            Debug.WriteLine("==============Request==============");
+            var signature = Signature(data);
+            var stringBody = JsonConvert.SerializeObject(new { data, signature });
+            Debug.WriteLine("==============Tunnel Request==============");
             Debug.WriteLine(stringBody);
             Debug.WriteLine("");
-            return new StringContent(stringBody, new UTF8Encoding(false));
+            return stringBody;
         }
 
-        public string Signature(string api, object param)
+        public string Signature(object data)
         {
-            string input = JsonConvert.SerializeObject(new { api, param });
+            string input = JsonConvert.SerializeObject(data);
             return input.ComputeSignature();
         }
         

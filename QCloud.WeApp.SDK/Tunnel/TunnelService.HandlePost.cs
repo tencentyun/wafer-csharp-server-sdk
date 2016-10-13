@@ -12,7 +12,7 @@ namespace QCloud.WeApp.SDK
 {
     public partial class TunnelService
     {
-        private async Task HandlePost(ITunnelHandler handler, TunnelHandleOptions options)
+        private void HandlePost(ITunnelHandler handler, TunnelHandleOptions options)
         {
             string requestBody = null;
             bool checkSignature = false;
@@ -21,58 +21,58 @@ namespace QCloud.WeApp.SDK
             {
                 using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
                 {
-                    requestBody = await reader.ReadToEndAsync();
+                    requestBody = reader.ReadToEnd();
                 }
             }
             
             try
             {
                 var bodyDefination = new {
-                    data = new string[0].Select(x => new {
+                    data = new {
                         tunnelId = string.Empty,
                         type = string.Empty,
                         content = string.Empty
-                    }),
+                    },
                     signature = string.Empty
                 };
 
                 var body = JsonConvert.DeserializeAnonymousType(requestBody, bodyDefination);
-                var data = body.data;
+                var packet = body.data;
                 var signature = body.signature;
 
-                if (checkSignature && !JsonConvert.SerializeObject(data).CheckSignature(signature))
+                if (checkSignature && !JsonConvert.SerializeObject(body.data).CheckSignature(signature))
                 {
                     LogRequest(requestBody, "Error: Signature Failed");
                     return;
                 }
 
-                foreach(var packet in data)
-                {
-                    var tunnel = Tunnel.GetById(packet.tunnelId);
-                    try
-                    {
-                        switch (packet.type)
-                        {
-                            case "connect":
-                                handler.OnTunnelConnect(tunnel);
-                                break;
-                            case "message":
-                                handler.OnTunnelMessage(tunnel, new TunnelMessage(packet.content));
-                                break;
-                            case "close":
-                                handler.OnTunnelClose(tunnel);
-                                break;
-                        }
-                    }
-                    catch {
-                        continue;
-                    }
-                }
+                LogRequest(requestBody, "OK");
 
-                Response.WriteJson(new {
+                Response.WriteJson(new
+                {
                     code = 0,
                     message = "OK"
                 });
+
+                var tunnel = Tunnel.GetById(packet.tunnelId);
+                try
+                {
+                    switch (packet.type)
+                    {
+                        case "connect":
+                            handler.OnTunnelConnect(tunnel);
+                            break;
+                        case "message":
+                            handler.OnTunnelMessage(tunnel, new TunnelMessage(packet.content));
+                            break;
+                        case "close":
+                            handler.OnTunnelClose(tunnel);
+                            break;
+                    }
+                }
+                catch(Exception e) {
+                    // ignore
+                }
             }
             catch (JsonException)
             {
@@ -104,7 +104,7 @@ namespace QCloud.WeApp.SDK
             {
                 try
                 {
-                    File.WriteAllText($"C:\\requests\\{DateTime.Today.ToString("yyyyMMdd_HH_mm_ss")}", requestBody + "\n\n" + handleResult);
+                    File.WriteAllText($"C:\\requests\\{DateTime.Now.ToString("yyyyMMdd_HH_mm_ss")}", requestBody + "\n\n" + handleResult);
                 }
                 catch { }
             }

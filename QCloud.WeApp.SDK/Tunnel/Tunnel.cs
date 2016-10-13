@@ -12,21 +12,20 @@ namespace QCloud.WeApp.SDK
         {
             return new Tunnel() { Id = tunnelId };
         }
-
-        public static void Broadcast(IEnumerable<string> tunnelIds, string type, object message)
-        {
-
-        }
-
-        public static void Broadcast(IEnumerable<Tunnel> tunnels, string type, object message) {
-            Broadcast(tunnels.Select(x => x.Id), type, message);
-        }
-
+        
         public string Id { get; internal set; }
 
         internal string ConnectUrl { get; set; }
         
-        public void Emit(string type, object message = null) {
+        public bool Emit(string messageType, object messageContent = null) {
+            TunnelAPI api = new TunnelAPI();
+            return api.EmitMessage(new string[] { Id }, messageType, messageContent);
+        }
+
+        public bool Close()
+        {
+            TunnelAPI api = new TunnelAPI();
+            return api.EmitPacket(new string[] { Id }, "close", null);
         }
     }
 }

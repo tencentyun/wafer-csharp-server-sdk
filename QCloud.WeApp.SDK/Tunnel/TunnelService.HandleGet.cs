@@ -22,7 +22,7 @@ namespace QCloud.WeApp.SDK
         /// GET 请求表示客户端请求进行信道连接，此时会向 SDK 申请信道连接地址，并且返回给客户端
         /// 如果配置指定了要求登陆，还会调用登陆服务来校验登陆态并获得用户信息
         /// </remarks>
-        private async Task HandleGet(ITunnelHandler handler, TunnelHandleOptions options)
+        private void HandleGet(ITunnelHandler handler, TunnelHandleOptions options)
         {
 
             Configuration config = ConfigurationManager.CurrentConfiguration;
@@ -34,11 +34,13 @@ namespace QCloud.WeApp.SDK
             TunnelAPI tunnelApi = new TunnelAPI();
             try
             {
-                tunnel = await tunnelApi.RequestConnect(config.SecretKey, BuildReceiveUrl());
+                var receiveUrl = BuildReceiveUrl();
+                tunnel = tunnelApi.RequestConnect(config.SecretKey, receiveUrl);
             }
             catch (Exception e)
             {
                 Response.WriteJson(new { error = e.Message });
+                throw e;
             }
 
             // 要求登录态，获取用户信息
@@ -47,7 +49,7 @@ namespace QCloud.WeApp.SDK
                 try
                 {
                     LoginService loginService = new LoginService(Request, Response);
-                    user = await loginService.Check();
+                    user = loginService.Check();
                 }
                 catch
                 {

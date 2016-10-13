@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using QCloud.WeApp.SDK;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace QCloud.WeApp.Demo.MVC.Controllers
 {
@@ -16,7 +17,7 @@ namespace QCloud.WeApp.Demo.MVC.Controllers
     public class UserController : Controller
     {
         // GET: User
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
             try
             {
@@ -24,10 +25,16 @@ namespace QCloud.WeApp.Demo.MVC.Controllers
                 LoginService loginService = new LoginService(Request, Response);
 
                 // 调用检查登录接口，成功后可以获得用户信息，进行正常的业务请求
-                UserInfo userInfo = await loginService.Check();
+                UserInfo userInfo = loginService.Check();
 
+                Response.AddHeader("Content-Type", "application/json");
                 // 获取会话成功，需要返回 HTTP 视图，这里作为示例返回了获得的用户信息
-                return Json(new { userInfo }, JsonRequestBehavior.AllowGet);
+                return Content(JsonConvert.SerializeObject(new
+                {
+                    code = 0,
+                    message = "OK",
+                    data = new { userInfo }
+                }));
             }
             catch (Exception error)
             {

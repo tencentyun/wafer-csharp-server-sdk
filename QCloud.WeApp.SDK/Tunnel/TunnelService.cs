@@ -46,16 +46,16 @@ namespace QCloud.WeApp.SDK
         /// <param name="handler">提供 WebSocket 信道处理器处理信道事件</param>
         /// <param name="options">可选，配置处理选项</param>
         /// <returns>返回任务进行跟踪，任务完成表示信道处理完成</returns>
-        public async Task Handle(ITunnelHandler handler, TunnelHandleOptions options = null)
+        public void Handle(ITunnelHandler handler, TunnelHandleOptions options = null)
         {
             if (Request.HttpMethod.ToUpper() == "GET")
             {
-                await HandleGet(handler, options);
+                HandleGet(handler, options);
             }
 
             if (Request.HttpMethod.ToUpper() == "POST")
             {
-                await HandlePost(handler, options);
+                HandlePost(handler, options);
             }
         }        
     }

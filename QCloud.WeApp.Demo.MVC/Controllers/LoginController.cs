@@ -15,7 +15,7 @@ namespace QCloud.WeApp.Demo.MVC.Controllers
         /// GET /login <para />
         /// 实现登录接口，配合客户端 SDK 建立会话
         /// </summary>
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
             try
             {
@@ -23,7 +23,7 @@ namespace QCloud.WeApp.Demo.MVC.Controllers
                 LoginService loginService = new LoginService(Request, Response);
 
                 // 调用登录接口，如果成功可以获得用户信息。如有需要，可以使用用户信息进行进一步的业务操作
-                UserInfo userInfo = await loginService.Login();
+                UserInfo userInfo = loginService.Login();
 
                 Debug.WriteLine(userInfo);
             }

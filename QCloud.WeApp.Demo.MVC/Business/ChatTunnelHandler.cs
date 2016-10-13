@@ -19,9 +19,9 @@ namespace QCloud.WeApp.Demo.MVC.Business
         private static Dictionary<string, UserInfo> userMap = new Dictionary<string, UserInfo>();
 
         /// <summary>
-        /// 当前已连接的 WebSocket 信道列表
+        /// 创建一个房间，包含当前已连接的 WebSocket 信道列表
         /// </summary>
-        private static List<Tunnel> connectedTunnels = new List<Tunnel>();
+        private static TunnelRoom room = new TunnelRoom();
 
 
         /// <summary>
@@ -32,7 +32,10 @@ namespace QCloud.WeApp.Demo.MVC.Business
         /// <param name="user">客户端当前会话用户</param>
         void ITunnelHandler.OnTunnelRequest(Tunnel tunnel, UserInfo user)
         {
-            userMap.Add(tunnel.Id, user);
+            if (user != null)
+            {
+                userMap.Add(tunnel.Id, user);
+            }
         }
 
         /// <summary>
@@ -42,9 +45,15 @@ namespace QCloud.WeApp.Demo.MVC.Business
         /// <param name="tunnel">成功连接的 WebSocket 信道</param>
         void ITunnelHandler.OnTunnelConnect(Tunnel tunnel)
         {
-            connectedTunnels.Add(tunnel);
-            Broadcast("people", new { total = connectedTunnels.Count, enter = userMap[tunnel.Id] });
-            tunnel.Emit("hello");
+            if (userMap.ContainsKey(tunnel.Id))
+            {
+                room.AddTunnel(tunnel);
+                room.Broadcast("people", new { total = room.TunnelCount, enter = userMap[tunnel.Id] });
+            }
+            else
+            {
+                tunnel.Close();
+            }
         }
 
         /// <summary>
@@ -60,7 +69,14 @@ namespace QCloud.WeApp.Demo.MVC.Business
             {
                 // 目前只处理 "speak" 类型的消息，只要有客户端说话，就把这个消息广播到所有信道上
                 case "speak":
-                    Broadcast("speak", new { who = userMap[tunnel.Id], word = message.Content.word });
+                    if (userMap.ContainsKey(tunnel.Id))
+                    {
+                        room.Broadcast("speak", new { who = userMap[tunnel.Id], word = message.Content.word });
+                    }
+                    else
+                    {
+                        tunnel.Close();
+                    }
                     break;
             }
         }
@@ -78,18 +94,8 @@ namespace QCloud.WeApp.Demo.MVC.Business
                 leaveUser = userMap[tunnel.Id];
                 userMap.Remove(tunnel.Id);
             }
-            connectedTunnels.RemoveAll(x => x.Id == tunnel.Id);
-            Broadcast("people", new { total = connectedTunnels.Count, leave = leaveUser });
-        }
-
-        /// <summary>
-        /// 调用 Tunnel.Broadcast() 进行广播
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="message"></param>
-        private void Broadcast(string type, object message)
-        {
-            Tunnel.Broadcast(connectedTunnels, type, message);
+            room.RemoveTunnel(tunnel);
+            room.Broadcast("people", new { total = room.TunnelCount, leave = leaveUser });
         }
     }
 }
