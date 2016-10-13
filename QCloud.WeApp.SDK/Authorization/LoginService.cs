@@ -109,7 +109,7 @@ namespace QCloud.WeApp.SDK
 
             if (String.IsNullOrEmpty(headerValue))
             {
-                var error = new LoginServiceException(Constants.ERR_INVALID_SESSION, $"请求头不包含 {headerName}，请配使用户端 SDK 登陆后再进行请求");
+                var error = new LoginServiceException(Constants.ERR_INVALID_SESSION, $"请求头不包含 {headerName}，请配合客户端 SDK 登陆后再进行请求");
                 Response.WriteJson(JsonForError(error));
                 throw error;
             }

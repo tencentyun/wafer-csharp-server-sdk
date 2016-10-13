@@ -31,9 +31,6 @@ namespace QCloud.WeApp.SDK
             string tunnelId = result.tunnelId;
             string connectUrl = result.connectUrl;
 
-            // 强制 wss 协议
-            connectUrl = connectUrl.Replace("ws://", "wss://");
-
             return new Tunnel()
             {
                 Id = tunnelId,
@@ -76,23 +73,28 @@ namespace QCloud.WeApp.SDK
         public dynamic Request(string path, object data)
         {
             string url = APIEndpoint + path;
-            string response;
+            string responseContent;
 
             try
             {
-                response = Http.Post(url, BuildRequestBody(data));
+                string requestContent = BuildRequestContent(data);
+                Debug.WriteLine("==============Tunnel Request==============");
+                Debug.WriteLine(requestContent);
+                Debug.WriteLine("");
+
+                responseContent = Http.Post(url, requestContent);
+
+                Debug.WriteLine("==============Tunnel Response==============");
+                Debug.WriteLine(responseContent);
+                Debug.WriteLine("");
             }
             catch (Exception httpException)
             {
                 throw new HttpRequestException("请求信道 API 失败，网络异常或鉴权服务器错误", httpException);
             }
-
-            Debug.WriteLine("==============Tunnel Response==============");
-            Debug.WriteLine(response);
-            Debug.WriteLine("");
             try
             {
-                dynamic body = JsonConvert.DeserializeObject(response);
+                dynamic body = JsonConvert.DeserializeObject(responseContent);
 
                 if (body.code != 0)
                 {
@@ -111,13 +113,10 @@ namespace QCloud.WeApp.SDK
             }
         }
 
-        public string BuildRequestBody(object data)
+        public string BuildRequestContent(object data)
         {
             var signature = Signature(data);
             var stringBody = JsonConvert.SerializeObject(new { data, signature });
-            Debug.WriteLine("==============Tunnel Request==============");
-            Debug.WriteLine(stringBody);
-            Debug.WriteLine("");
             return stringBody;
         }
 

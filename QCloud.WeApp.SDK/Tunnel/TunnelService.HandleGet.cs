@@ -30,19 +30,6 @@ namespace QCloud.WeApp.SDK
             Tunnel tunnel = null;
             UserInfo user = null;
 
-            // 申请 WebSocket 信道连接地址
-            TunnelAPI tunnelApi = new TunnelAPI();
-            try
-            {
-                var receiveUrl = BuildReceiveUrl();
-                tunnel = tunnelApi.RequestConnect(config.SecretKey, receiveUrl);
-            }
-            catch (Exception e)
-            {
-                Response.WriteJson(new { error = e.Message });
-                throw e;
-            }
-
             // 要求登录态，获取用户信息
             if (options?.CheckLogin == true)
             {
@@ -56,6 +43,19 @@ namespace QCloud.WeApp.SDK
                     // 要求检查登录态的话，发生异常就结束了
                     return;
                 }
+            }
+
+            // 申请 WebSocket 信道连接地址
+            TunnelAPI tunnelApi = new TunnelAPI();
+            try
+            {
+                var receiveUrl = BuildReceiveUrl();
+                tunnel = tunnelApi.RequestConnect(config.SecretKey, receiveUrl);
+            }
+            catch (Exception e)
+            {
+                Response.WriteJson(new { error = e.Message });
+                throw e;
             }
 
             // 输出 URL 结果
