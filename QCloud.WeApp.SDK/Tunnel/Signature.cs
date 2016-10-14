@@ -11,8 +11,8 @@ namespace QCloud.WeApp.SDK
     {
         public static string ComputeSignature(this string input)
         {
-            var skey = ConfigurationManager.CurrentConfiguration.SecretKey;
-            return Sha1Hash(input + skey);
+            var skey = ConfigurationManager.CurrentConfiguration.TunnelSignatureKey;
+            return (input + skey).HashSha1();
         }
 
         public static bool CheckSignature(this string input, string signature)
@@ -20,18 +20,31 @@ namespace QCloud.WeApp.SDK
             return input.ComputeSignature() == signature;
         }
 
-        private static string Sha1Hash(string input)
+        public static string HashSha1(this string input)
         {
             using (SHA1Managed sha1 = new SHA1Managed())
             {
-                var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
-                var builder = new StringBuilder();
-                foreach (byte b in hash)
-                {
-                    builder.Append(b.ToString("x2"));
-                }
-                return builder.ToString();
+                return input.Hash(sha1);
             }
+        }
+
+        public static string HashMd5(this string input)
+        {
+            using (var md5 = MD5.Create())
+            {
+                return input.Hash(md5);
+            }
+        }
+
+        public static string Hash(this string input, HashAlgorithm algorithm)
+        {
+            var hash = algorithm.ComputeHash(Encoding.UTF8.GetBytes(input));
+            var builder = new StringBuilder();
+            foreach (byte b in hash)
+            {
+                builder.Append(b.ToString("x2"));
+            }
+            return builder.ToString();
         }
     }
 }

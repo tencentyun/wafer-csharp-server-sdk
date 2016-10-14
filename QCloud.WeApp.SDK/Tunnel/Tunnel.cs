@@ -8,11 +8,13 @@ namespace QCloud.WeApp.SDK
 {
     public class Tunnel
     {
-        public static Tunnel GetById(string tunnelId)
-        {
-            return new Tunnel() { Id = tunnelId };
+        public static Tunnel GetById(string tunnelId) {
+            return new Tunnel()
+            {
+                Id = tunnelId
+            };
         }
-        
+                
         public string Id { get; internal set; }
 
         internal string ConnectUrl { get; set; }

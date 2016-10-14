@@ -15,7 +15,6 @@ namespace QCloud.WeApp.SDK
         private void HandlePost(ITunnelHandler handler, TunnelHandleOptions options)
         {
             string requestBody = null;
-            bool checkSignature = false;
 
             using (Stream stream = Request.InputStream)
             {
@@ -28,26 +27,33 @@ namespace QCloud.WeApp.SDK
             try
             {
                 var bodyDefination = new {
-                    data = new {
-                        tunnelId = string.Empty,
-                        type = string.Empty,
-                        content = string.Empty
-                    },
+                    data = "{encode data}",
+                    dataEncode = "json",
                     signature = string.Empty
                 };
 
                 var body = JsonConvert.DeserializeAnonymousType(requestBody, bodyDefination);
-                var packet = body.data;
+                var data = body.data;
                 var signature = body.signature;
-
-                if (checkSignature && !JsonConvert.SerializeObject(body.data).CheckSignature(signature))
+                if ((data + TunnelClient.Key).HashSha1() != signature)
                 {
-                    LogRequest(requestBody, "Error: Signature Failed");
+                    Response.WriteJson(new
+                    {
+                        code = 9003,
+                        message = "Bad Request - 签名错误"
+                    });
                     return;
                 }
 
-                LogRequest(requestBody, "OK");
+                var packetShape = new
+                {
+                    tunnelId = string.Empty,
+                    type = string.Empty,
+                    content = string.Empty
+                };
 
+                var packet = JsonConvert.DeserializeAnonymousType(data, packetShape);                
+                
                 Response.WriteJson(new
                 {
                     code = 0,
@@ -81,7 +87,6 @@ namespace QCloud.WeApp.SDK
                     code = 9001,
                     message = "Cant not parse the request body: invalid json"
                 });
-                LogRequest(requestBody, "Error: Invalid Json");
                 return;
             }
             catch (Exception)
@@ -91,7 +96,6 @@ namespace QCloud.WeApp.SDK
                     code = 10001,
                     message = "Unexpected Error"
                 });
-                LogRequest(requestBody, "Error: Unknown Data");
                 return;
             }
 

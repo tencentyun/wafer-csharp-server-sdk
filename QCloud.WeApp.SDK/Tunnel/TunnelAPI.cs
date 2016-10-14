@@ -9,15 +9,17 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace QCloud.WeApp.SDK
 {
     internal class TunnelAPI
     {
+        
         /// <summary>
         /// 从配置文件读取 API 访问地址
         /// </summary>
-        private string APIEndpoint
+        private string TunnelServerUrl
         {
             get
             {
@@ -27,7 +29,7 @@ namespace QCloud.WeApp.SDK
 
         public Tunnel RequestConnect(string skey, string receiveUrl)
         {
-            var result = Request("/get/wsurl?uin=208852691", new { skey, receiveUrl, protocolType = "wss" });
+            var result = Request("/get/wsurl", new { skey, receiveUrl, protocolType = "wss" }, true);
             string tunnelId = result.tunnelId;
             string connectUrl = result.connectUrl;
 
@@ -55,8 +57,8 @@ namespace QCloud.WeApp.SDK
             };
             try
             {
-                var result = Request("/ws/push", data);
-                return result.code == 0;
+                Request("/ws/push", data);
+                return true;
             }
             catch (Exception e) {
                 Debug.WriteLine(e);
@@ -70,14 +72,14 @@ namespace QCloud.WeApp.SDK
         /// <param name="api">API 名称</param>
         /// <param name="data">API 参数</param>
         /// <returns>API 返回的数据</returns>
-        public dynamic Request(string path, object data)
+        public dynamic Request(string path, object data, bool emitSkey = false)
         {
-            string url = APIEndpoint + path;
+            string url = TunnelServerUrl + path;
             string responseContent;
 
             try
             {
-                string requestContent = BuildRequestContent(data);
+                string requestContent = BuildRequestContent(data, emitSkey);
                 Debug.WriteLine("==============Tunnel Request==============");
                 Debug.WriteLine(requestContent);
                 Debug.WriteLine("");
@@ -94,14 +96,21 @@ namespace QCloud.WeApp.SDK
             }
             try
             {
-                dynamic body = JsonConvert.DeserializeObject(responseContent);
+                var bodyShape = new
+                {
+                    code = 0,
+                    message = "OK",
+                    data = "{}"
+                };
+                var body = JsonConvert.DeserializeAnonymousType(responseContent, bodyShape, new JsonSerializerSettings() {
+                    NullValueHandling = NullValueHandling.Include
+                });
 
                 if (body.code != 0)
                 {
                     throw new Exception($"信道服务调用失败：#{body.code} - ${body.message}");
                 }
-                // TODO 校验签名
-                return body.data;
+                return body.data == null ? null : JsonConvert.DeserializeObject(body.data);
             }
             catch (JsonException e)
             {
@@ -113,18 +122,27 @@ namespace QCloud.WeApp.SDK
             }
         }
 
-        public string BuildRequestContent(object data)
+        public string BuildRequestContent(object data, bool includeSkey)
         {
-            var signature = Signature(data);
-            var stringBody = JsonConvert.SerializeObject(new { data, signature });
+            var encodedData = JsonConvert.SerializeObject(data);
+            var requestPayload = new
+            {
+                data = encodedData,
+                dataEncode = "json",
+                tcId = TunnelClient.Id,
+                tcKey = includeSkey ? TunnelClient.Key : null,
+                signature = Signature(encodedData)
+            };
+            var stringBody = JsonConvert.SerializeObject(requestPayload, new JsonSerializerSettings() {
+                NullValueHandling = NullValueHandling.Ignore,
+                Formatting = Formatting.Indented
+            });
             return stringBody;
         }
-
-        public string Signature(object data)
-        {
-            string input = JsonConvert.SerializeObject(data);
-            return input.ComputeSignature();
-        }
         
+        private string Signature(string data)
+        {
+            return (data + TunnelClient.Key).HashSha1();
+        }
     }
 }
