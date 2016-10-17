@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
 using Newtonsoft.Json;
-using System.Diagnostics;
 
 namespace QCloud.WeApp.SDK
 {
@@ -66,22 +65,51 @@ namespace QCloud.WeApp.SDK
         /// <returns>API 返回的数据</returns>
         public dynamic Request(string apiName, object apiParams)
         {
+            using (SdkDebug.WriteLineAndIndent("> 请求鉴权服务 API"))
+            {
+                return DoRequest(apiName, apiParams);
+            }
+        }
 
-            string response = null;
+        private dynamic DoRequest(string apiName, object apiParams)
+        {
+            string responseContent;
+
+            // 请求授权服务器，获取返回报文
             try
             {
-                response = Http.Post(APIEndpoint, BuildRequestBody(apiName, apiParams));
+                string requestContent = BuildRequestBody(apiName, apiParams);
+
+                DateTime start = DateTime.Now;
+                responseContent = Http.Post(APIEndpoint, BuildRequestBody(apiName, apiParams));
+                DateTime end = DateTime.Now;
+                TimeSpan cost = end - start;
+
+                using (SdkDebug.WriteLineAndIndent($"POST {APIEndpoint} (Time: {start.ToString("HH:mm:ss")}, Cost: {cost.TotalMilliseconds}ms)"))
+                {
+                    using (SdkDebug.WriteLineAndIndent("Requset:"))
+                    {
+                        SdkDebug.WriteLine(requestContent);
+                    }
+                    using (SdkDebug.WriteLineAndIndent("Response:"))
+                    {
+                        SdkDebug.WriteLine(responseContent);
+                    }
+                }
             }
-            catch (Exception error) {
+            catch (Exception error)
+            {
+                using (SdkDebug.WriteLineAndIndent($"POST {APIEndpoint} (ERROR)"))
+                {
+                    SdkDebug.WriteLine(error);
+                }
                 throw new HttpRequestException("请求鉴权 API 失败，网络异常或鉴权服务器错误", error);
             }
-            
-            Debug.WriteLine("==============Auth Response==============");
-            Debug.WriteLine(response);
-            Debug.WriteLine("");
+
+            // 解析返回报文
             try
             {
-                dynamic body = JsonConvert.DeserializeObject(response);
+                dynamic body = JsonConvert.DeserializeObject(responseContent);
 
                 if (body.returnCode != 0)
                 {
@@ -118,9 +146,6 @@ namespace QCloud.WeApp.SDK
                     @para = apiParams
                 }
             });
-            Debug.WriteLine("==============Auth Request==============");
-            Debug.WriteLine(body);
-            Debug.WriteLine("");
             return body;
         }
     }

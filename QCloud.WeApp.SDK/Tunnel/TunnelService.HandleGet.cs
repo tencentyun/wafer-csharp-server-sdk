@@ -49,7 +49,7 @@ namespace QCloud.WeApp.SDK
             TunnelAPI tunnelApi = new TunnelAPI();
             try
             {
-                tunnel = tunnelApi.RequestConnect(config.TunnelSignatureKey, BuildReceiveUrl());
+                tunnel = tunnelApi.RequestConnect(BuildReceiveUrl());
             }
             catch (Exception e)
             {

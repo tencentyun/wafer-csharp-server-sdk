@@ -12,56 +12,146 @@ namespace QCloud.WeApp.SDK
 {
     public partial class TunnelService
     {
+        /// <summary>
+        /// 对信道服务器使用 POST 方法推送到业务服务器的报文进行处理
+        /// </summary>
+        /// <param name="handler">客户使用的信道服务处理实例，用于处理解析之后的包</param>
         private void HandlePost(ITunnelHandler handler, TunnelHandleOptions options)
         {
-            string requestBody = null;
-
-            using (Stream stream = Request.InputStream)
+            using (SdkDebug.WriteLineAndIndent($"> 收到信道服务器 POST 过来的报文 (Time: {DateTime.Now.ToString("HH:mm:ss")})"))
             {
-                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
-                {
-                    requestBody = reader.ReadToEnd();
-                }
+                DoHandlePost(handler);
             }
-            
+        }
+
+        /// <remarks>
+        /// 对于推送过来的报文，我们这样进行处理：
+        ///     1. 读取报文内容
+        ///     2. 解析报文内容成 JSON
+        ///     3. 检查报文签名，如果失败，则忽略报文
+        ///     4. 解析报文所携带包数据（解析成功直接响应）
+        ///     5. 根据包类型（connect/message/close）给到客户指定的处理实例进行处理
+        /// </remarks>
+        private void DoHandlePost(ITunnelHandler handler)
+        {
+            #region 1. 读取报文内容
+            string requestContent = null;
             try
             {
-                var bodyDefination = new {
-                    data = "{encode data}",
-                    dataEncode = "json",
-                    signature = string.Empty
-                };
-
-                var body = JsonConvert.DeserializeAnonymousType(requestBody, bodyDefination);
-                var data = body.data;
-                var signature = body.signature;
-                if ((data + TunnelClient.Key).HashSha1() != signature)
+                using (Stream stream = Request.InputStream)
                 {
-                    Response.WriteJson(new
+                    using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
                     {
-                        code = 9003,
-                        message = "Bad Request - 签名错误"
-                    });
-                    return;
+                        requestContent = reader.ReadToEnd();
+                    }
                 }
-
-                var packetShape = new
+                using (SdkDebug.WriteLineAndIndent("> 读取报文内容：成功"))
                 {
-                    tunnelId = string.Empty,
-                    type = string.Empty,
-                    content = string.Empty
-                };
+                    SdkDebug.WriteLine(requestContent);
+                }
+            }
+            catch (Exception error)
+            {
+                using (SdkDebug.WriteLineAndIndent("> 读取报文内容：失败"))
+                {
+                    SdkDebug.WriteLine(error);
+                }
+                throw new Exception("读取报文失败", error);
+            }
+            #endregion
 
-                var packet = JsonConvert.DeserializeAnonymousType(data, packetShape);                
-                
+            #region 2. 读取报文内容成 JSON 并保存在 body 变量中        
+            var body = new
+            {
+                data = "{encode data}",
+                dataEncode = "json",
+                signature = string.Empty
+            };
+            try
+            {
+                body = JsonConvert.DeserializeAnonymousType(requestContent, body);
+                SdkDebug.WriteLine("> 解析报文内容：成功");
+            }
+            catch (JsonException ex)
+            {
+                using (SdkDebug.WriteLineAndIndent("> 解析报文内容：失败"))
+                {
+                    SdkDebug.WriteLine(ex);
+                }
                 Response.WriteJson(new
                 {
-                    code = 0,
-                    message = "OK"
+                    code = 9001,
+                    message = "Cant not parse the request body: invalid json"
                 });
+                return;
+            }
+            #endregion
 
-                var tunnel = Tunnel.GetById(packet.tunnelId);
-                try
+            #region 3. 检查报文签名
+            string data = body.data;
+            string signature = body.signature;
+            string computedSignature = (data + TunnelClient.Key).HashSha1();
+            if (computedSignature != signature)
+            {
+                using (SdkDebug.WriteLineAndIndent("> 检查签名：失败"))
+                {
+                    SdkDebug.WriteLine($"报文签名：{signature}，计算结果：{computedSignature}，tcKey: {TunnelClient.Key}");
+                }
+                Response.WriteJson(new
+                {
+                    code = 9003,
+                    message = "Bad Request - 签名错误"
+                });
+                return;
+            }
+            using (SdkDebug.WriteLineAndIndent("> 检查签名：成功"))
+            {
+                SdkDebug.WriteLine(signature);
+            }
+            #endregion
+
+            #region 4. 解析报文中携带的包数据
+            var packet = new
+            {
+                tunnelId = string.Empty,
+                type = string.Empty,
+                content = string.Empty
+            };
+            try
+            {
+                packet = JsonConvert.DeserializeAnonymousType(data, packet);
+            }
+            catch (JsonException ex)
+            {
+                using (SdkDebug.WriteLineAndIndent("> 解析包数据：失败"))
+                {
+                    SdkDebug.WriteLine(ex);
+                }
+                Response.WriteJson(new
+                {
+                    code = 9004,
+                    message = "Bad Request - 无法解析的数据包"
+                });
+                return;
+            }
+            using (SdkDebug.WriteLineAndIndent("> 解析包数据：成功"))
+            {
+                SdkDebug.WriteLine($"tunnelId = {packet.tunnelId}");
+                SdkDebug.WriteLine($"type = {packet.type}");
+                SdkDebug.WriteLine($"content = {packet.content}");
+            }
+            Response.WriteJson(new
+            {
+                code = 0,
+                message = "OK"
+            });
+            #endregion
+
+            #region 5. 交给客户处理实例处理报文
+            var tunnel = Tunnel.GetById(packet.tunnelId);
+            try
+            {
+                using (SdkDebug.WriteLineAndIndent("> 处理数据包：开始"))
                 {
                     switch (packet.type)
                     {
@@ -76,42 +166,16 @@ namespace QCloud.WeApp.SDK
                             break;
                     }
                 }
-                catch(Exception e) {
-                    // ignore
+                SdkDebug.WriteLine("> 处理数据包：完成");
+            }
+            catch (Exception ex)
+            {
+                using (SdkDebug.WriteLineAndIndent("> 处理数据包：发生异常"))
+                {
+                    SdkDebug.WriteLine(ex);
                 }
             }
-            catch (JsonException)
-            {
-                Response.WriteJson(new
-                {
-                    code = 9001,
-                    message = "Cant not parse the request body: invalid json"
-                });
-                return;
-            }
-            catch (Exception)
-            {
-                Response.WriteJson(new
-                {
-                    code = 10001,
-                    message = "Unexpected Error"
-                });
-                return;
-            }
-
-        }
-
-        private void LogRequest(string requestBody, string handleResult)
-        {
-            bool log = true;
-            if (log)
-            {
-                try
-                {
-                    File.WriteAllText($"C:\\requests\\{DateTime.Now.ToString("yyyyMMdd_HH_mm_ss")}", requestBody + "\n\n" + handleResult);
-                }
-                catch { }
-            }
+            #endregion
         }
     }
 }
