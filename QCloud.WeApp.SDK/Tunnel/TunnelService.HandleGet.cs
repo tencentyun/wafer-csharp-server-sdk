@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using QCloud.WeApp.SDK.Authorization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace QCloud.WeApp.SDK
+namespace QCloud.WeApp.SDK.Tunnel
 {
 
     public partial class TunnelService

@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Http;
 using Newtonsoft.Json;
 
-namespace QCloud.WeApp.SDK
+namespace QCloud.WeApp.SDK.Authorization
 {
     /// <summary>
     /// 访问鉴权服务 API

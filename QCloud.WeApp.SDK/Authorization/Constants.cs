@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace QCloud.WeApp.SDK
+namespace QCloud.WeApp.SDK.Authorization
 {
     public static class Constants
     {

@@ -1,4 +1,4 @@
-﻿namespace QCloud.WeApp.SDK
+﻿namespace QCloud.WeApp.SDK.Tunnel
 {
     public enum TunnelInvalidType
     {

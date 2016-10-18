@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
-namespace QCloud.WeApp.SDK.Authorization
+namespace QCloud.WeApp.SDK.Tests.Mock
 {
-    internal class CheckLoginResult
+    public class Request: HttpRequestBase
     {
-        public UserInfo UserInfo { get; set; }
     }
 }

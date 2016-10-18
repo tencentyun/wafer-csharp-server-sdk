@@ -7,6 +7,7 @@ using QCloud.WeApp.SDK;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using QCloud.WeApp.SDK.Authorization;
 
 namespace QCloud.WeApp.Demo.MVC.Controllers
 {

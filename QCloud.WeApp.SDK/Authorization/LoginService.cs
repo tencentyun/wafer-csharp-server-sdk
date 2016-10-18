@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Net.Http;
 
-namespace QCloud.WeApp.SDK
+namespace QCloud.WeApp.SDK.Authorization
 {
 
     public class LoginService

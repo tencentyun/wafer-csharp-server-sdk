@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace QCloud.WeApp.SDK
+namespace QCloud.WeApp.SDK.Authorization
 {
     [JsonObject]
     public class UserInfo

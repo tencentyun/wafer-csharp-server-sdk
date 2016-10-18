@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QCloud.WeApp.SDK
+namespace QCloud.WeApp.SDK.Tunnel
 {
     internal static class Signature
     {

@@ -163,6 +163,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\filesystem.pubxml" />
     <None Include="Properties\PublishProfiles\ws-csharp.qcloud.la.pubxml" />
   </ItemGroup>
   <PropertyGroup>

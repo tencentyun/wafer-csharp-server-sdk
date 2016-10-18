@@ -1,4 +1,6 @@
 ﻿using QCloud.WeApp.SDK;
+using QCloud.WeApp.SDK.Authorization;
+using QCloud.WeApp.SDK.Tunnel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -37,7 +39,7 @@ namespace QCloud.WeApp.Demo.MVC.Business
         /// </summary>
         /// <param name="tunnel">客户端请求道的 WebSocket 信道</param>
         /// <param name="user">客户端当前会话用户</param>
-        void OnTunnelRequest(Tunnel tunnel, UserInfo user)
+        public void OnTunnelRequest(Tunnel tunnel, UserInfo user)
         {
             if (user != null)
             {
@@ -50,7 +52,7 @@ namespace QCloud.WeApp.Demo.MVC.Business
         /// 在客户端成功连接 WebSocket 信道服务之后会调用该方法，此时通知所有其它在线的用户当前总人数以及刚加入的用户是谁
         /// </summary>
         /// <param name="tunnel">成功连接的 WebSocket 信道</param>
-        void OnTunnelConnect(Tunnel tunnel)
+        public void OnTunnelConnect(Tunnel tunnel)
         {
             if (userMap.ContainsKey(tunnel.Id))
             {
@@ -70,7 +72,7 @@ namespace QCloud.WeApp.Demo.MVC.Business
         /// </summary>
         /// <param name="tunnel">发送消息的信道</param>
         /// <param name="message">发送的消息数据</param>
-        void OnTunnelMessage(Tunnel tunnel, TunnelMessage message)
+        public void OnTunnelMessage(Tunnel tunnel, TunnelMessage message)
         {
             switch(message.Type)
             {
@@ -93,7 +95,7 @@ namespace QCloud.WeApp.Demo.MVC.Business
         /// 客户端关闭 WebSocket 信道或者被信道服务器判断为已断开后，会调用该方法，此时可以进行清理及通知操作
         /// </summary>
         /// <param name="tunnel">已关闭的信道</param>
-        void OnTunnelClose(Tunnel tunnel)
+        public void OnTunnelClose(Tunnel tunnel)
         {
             UserInfo leaveUser = null;
             if (userMap.ContainsKey(tunnel.Id))

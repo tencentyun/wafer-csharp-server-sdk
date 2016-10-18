@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using QCloud.WeApp.SDK;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using QCloud.WeApp.SDK.Authorization;
 
 namespace QCloud.WeApp.Demo.MVC.Controllers
 {

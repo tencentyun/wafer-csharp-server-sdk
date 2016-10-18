@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QCloud.WeApp.SDK
+namespace QCloud.WeApp.SDK.Tunnel
 {
     /// <summary>
     /// 表示发送消息到信道服务器时发生的异常
