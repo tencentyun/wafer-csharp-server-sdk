@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,5 +44,12 @@ namespace QCloud.WeApp.SDK
         /// </summary>
         [JsonProperty("networkProxy")]
         public string NetworkProxy { get; set; }
+
+        /// <summary>
+        /// 网络超时设置，单位为秒
+        /// </summary>
+        [DefaultValue(15)]
+        [JsonProperty("networkTimeout", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public int NetworkTimeout { get; internal set; }
     }
 }

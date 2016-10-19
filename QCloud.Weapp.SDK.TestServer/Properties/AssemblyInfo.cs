@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("QCloud.WeApp.SDK")]
+[assembly: AssemblyTitle("QCloud.Weapp.SDK.TestServer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("QCloud.WeApp.SDK")]
+[assembly: AssemblyProduct("QCloud.Weapp.SDK.TestServer")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("ca988b0d-40f0-4951-a620-490e4f2ba1a5")]
+[assembly: Guid("848dad42-4cf9-444b-95f9-0b3057921290")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,8 +34,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-
-// For Moq to visit internally
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
-[assembly: InternalsVisibleTo("QCloud.WeApp.SDK.Tests")]

@@ -16,6 +16,11 @@ namespace QCloud.WeApp.SDK.Authorization
         internal const string WX_HEADER_ENCRYPT_DATA = "X-WX-Encrypt-Data";
 
         /// <summary>
+        /// 表示请求无效
+        /// </summary>
+        public const string ERR_INVALID_REQUEST = "ERR_INVALID_REQUEST";
+
+        /// <summary>
         /// 表示登录失败
         /// </summary>
         public const string ERR_LOGIN_FAILED = "ERR_LOGIN_FAILED";

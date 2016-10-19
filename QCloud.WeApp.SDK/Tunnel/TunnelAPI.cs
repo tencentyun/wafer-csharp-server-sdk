@@ -89,7 +89,7 @@ namespace QCloud.WeApp.SDK.Tunnel
                 }
                 catch (Exception error)
                 {
-                    throw new EmitException("网络不可用或者信道服务器不可用", error);
+                    throw new EmitException($"网络不可用或者信道服务器不可用：{error.Message}", error);
                 }
             }
         }

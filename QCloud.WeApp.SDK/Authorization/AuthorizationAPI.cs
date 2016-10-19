@@ -103,7 +103,7 @@ namespace QCloud.WeApp.SDK.Authorization
                 {
                     SdkDebug.WriteLine(error);
                 }
-                throw new HttpRequestException("请求鉴权 API 失败，网络异常或鉴权服务器错误", error);
+                throw new HttpRequestException($"请求鉴权 API 失败，网络异常或鉴权服务器错误：{error.Message}", error);
             }
 
             // 解析返回报文

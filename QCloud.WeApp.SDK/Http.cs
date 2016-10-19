@@ -11,6 +11,19 @@ using System.IO;
 
 namespace QCloud.WeApp.SDK
 {
+    internal interface IWebRequestProvider
+    {
+        HttpWebRequest Create(string url);
+    }
+
+    internal class DefaultWebRequestProvider: IWebRequestProvider
+    {
+        public HttpWebRequest Create(string url)
+        {
+            return WebRequest.CreateHttp(url);
+        }
+    }
+
     internal static class Http
     {
         public static void WriteJson(this HttpResponseBase response, object json)
@@ -19,10 +32,13 @@ namespace QCloud.WeApp.SDK
             response.Write(JsonConvert.SerializeObject(json));
         }
 
+        public static IWebRequestProvider WebRequestProvider = new DefaultWebRequestProvider();
+
         public static string Request(string method, string url, string body)
         {
             var bodyBytes = Encoding.UTF8.GetBytes(body);
-            HttpWebRequest request = WebRequest.CreateHttp(url);
+            HttpWebRequest request = WebRequestProvider.Create(url);
+            request.Timeout = ConfigurationManager.CurrentConfiguration.NetworkTimeout * 1000;
             request.Method = method;
             request.ContentType = "application/json";
             request.ContentLength = bodyBytes.Length;
@@ -49,23 +65,6 @@ namespace QCloud.WeApp.SDK
         public static string Get(string url, string body)
         {
             return Request("GET", url, body);
-        }
-
-        public static HttpClient CreateClient()
-        {
-            Configuration config = ConfigurationManager.CurrentConfiguration;
-            
-            if (config.NetworkProxy != null)
-            {
-                return new HttpClient(new HttpClientHandler()
-                {
-                    Proxy = new WebProxy(config.NetworkProxy)
-                });
-            }
-            else
-            {
-                return new HttpClient();
-            }
         }
     }
 }

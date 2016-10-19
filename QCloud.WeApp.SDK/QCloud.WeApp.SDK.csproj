@@ -52,6 +52,7 @@
     <Compile Include="Authorization\AuthorizationAPIException.cs" />
     <Compile Include="Authorization\CheckLoginResult.cs" />
     <Compile Include="ConfigurationException.cs" />
+    <Compile Include="JsonHelper.cs" />
     <Compile Include="SdkDebug.cs" />
     <Compile Include="Tunnel\EmitException.cs" />
     <Compile Include="Tunnel\TunnelInvalidInfo.cs" />

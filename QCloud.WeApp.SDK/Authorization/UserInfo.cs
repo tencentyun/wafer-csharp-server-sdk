@@ -13,6 +13,9 @@ namespace QCloud.WeApp.SDK.Authorization
         [JsonProperty("openId")]
         public string OpenId { get; set; }
 
+        [JsonProperty("unionId")]
+        public string UnionId { get; set; }
+
         [JsonProperty("nickName")]
         public string NickName { get; set; }
 

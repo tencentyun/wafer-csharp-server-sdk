@@ -35,7 +35,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Moq, Version=4.5.23.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.5.23\lib\net45\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -45,19 +60,46 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Tunnel\TunnelServiceTest_Get.cs" />
+    <Compile Include="Tunnel\TunnelServiceTestHelper.cs" />
+    <Compile Include="Authorization\LoginServiceTest_Check.cs" />
+    <Compile Include="Authorization\LoginServiceTest_Login.cs" />
+    <Compile Include="Authorization\LoginServiceTestHelper.cs" />
+    <Compile Include="Authorization\LoginServiceTest.cs" />
+    <Compile Include="Tunnel\TunnelServiceTest.cs" />
+    <Compile Include="HttpMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\QCloud.WeApp.Demo.MVC\QCloud.WeApp.Demo.MVC.csproj">
+      <Project>{65262f3f-8402-4970-be3d-5c122db501e9}</Project>
+      <Name>QCloud.WeApp.Demo.MVC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QCloud.Weapp.SDK.TestServer\QCloud.WeApp.SDK.TestServer.csproj">
+      <Project>{848dad42-4cf9-444b-95f9-0b3057921290}</Project>
+      <Name>QCloud.WeApp.SDK.TestServer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\QCloud.WeApp.SDK\QCloud.WeApp.SDK.csproj">
       <Project>{ca988b0d-40f0-4951-a620-490e4f2ba1a5}</Project>
       <Name>QCloud.WeApp.SDK</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="sdk.test.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Specification.md" />
+  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

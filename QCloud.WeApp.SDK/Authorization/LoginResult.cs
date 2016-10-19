@@ -8,8 +8,6 @@ namespace QCloud.WeApp.SDK.Authorization
 {
     public class LoginResult
     {
-        public bool Success { get; set; }
-
         public string Id { get; set; }
 
         public string Skey { get; set; }
