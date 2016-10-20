@@ -144,14 +144,14 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\qcloud-weapp-server-sdk-csharp\QCloud.WeApp.SDK\QCloud.WeApp.SDK.csproj">
+    <None Include="Properties\PublishProfiles\filesystem.pubxml" />
+    <None Include="Properties\PublishProfiles\ws-csharp.qcloud.la.pubxml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QCloud.WeApp.SDK\QCloud.WeApp.SDK.csproj">
       <Project>{ca988b0d-40f0-4951-a620-490e4f2ba1a5}</Project>
       <Name>QCloud.WeApp.SDK</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Properties\PublishProfiles\filesystem.pubxml" />
-    <None Include="Properties\PublishProfiles\ws-csharp.qcloud.la.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
