@@ -38,4 +38,4 @@ using System.Runtime.InteropServices;
 
 // For Moq to visit internally
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
-[assembly: InternalsVisibleTo("QCloud.WeApp.SDK.Tests")]
+[assembly: InternalsVisibleTo("QCloud.WeApp.Tests")]

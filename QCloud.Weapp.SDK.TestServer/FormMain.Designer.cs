@@ -1,4 +1,4 @@
-﻿namespace QCloud.WeApp.SDK.TestServer
+﻿namespace QCloud.WeApp.TestServer
 {
     partial class FormMain
     {
@@ -147,6 +147,7 @@
             this.Controls.Add(this.buttonStart);
             this.Name = "FormMain";
             this.Text = "QCloud WeAPP 测试服务器";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             this.splitContainer.Panel2.PerformLayout();

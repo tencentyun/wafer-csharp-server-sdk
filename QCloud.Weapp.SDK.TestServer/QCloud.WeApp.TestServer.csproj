@@ -7,8 +7,8 @@
     <ProjectGuid>{848DAD42-4CF9-444B-95F9-0B3057921290}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QCloud.Weapp.SDK.TestServer</RootNamespace>
-    <AssemblyName>QCloud.Weapp.SDK.TestServer</AssemblyName>
+    <RootNamespace>QCloud.Weapp.TestServer</RootNamespace>
+    <AssemblyName>QCloud.Weapp.TestServer</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -80,6 +80,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

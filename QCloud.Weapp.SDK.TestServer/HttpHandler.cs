@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Threading;
 
-namespace QCloud.WeApp.SDK.TestServer
+namespace QCloud.WeApp.TestServer
 {
     public class HttpHandler
     {
@@ -178,7 +178,8 @@ namespace QCloud.WeApp.SDK.TestServer
                 code = 0,
                 message = "OK",
                 data = new {
-                    connectUrl = "wss://ws.qcloud.com/ws/fakeconnect"
+                    tunnelId = "tunnel1",
+                    connectUrl = "wss://ws.qcloud.com/ws/tunnel1"
                 }.ToJson()
             }.ToJson());
         }
@@ -225,7 +226,7 @@ namespace QCloud.WeApp.SDK.TestServer
             }
             if (indicator == "expect-timeout")
             {
-                return Output("Timeout", 5);
+                return Output("Timeout", 60);
             }
             return null;
         }

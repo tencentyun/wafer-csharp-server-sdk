@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QCloud.WeApp.Demo.MVC", "QCloud.WeApp.Demo.MVC\QCloud.WeApp.Demo.MVC.csproj", "{65262F3F-8402-4970-BE3D-5C122DB501E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QCloud.WeApp.SDK.TestServer", "QCloud.Weapp.SDK.TestServer\QCloud.WeApp.SDK.TestServer.csproj", "{848DAD42-4CF9-444B-95F9-0B3057921290}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QCloud.WeApp.TestServer", "QCloud.Weapp.SDK.TestServer\QCloud.WeApp.TestServer.csproj", "{848DAD42-4CF9-444B-95F9-0B3057921290}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QCloud.WeApp.SDK.Tests", "QCloud.WeApp.SDK.Tests\QCloud.WeApp.SDK.Tests.csproj", "{0C62E145-8C95-4AF0-9E8C-47B8D27B33AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QCloud.WeApp.Tests", "QCloud.WeApp.SDK.Tests\QCloud.WeApp.Tests.csproj", "{0C62E145-8C95-4AF0-9E8C-47B8D27B33AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

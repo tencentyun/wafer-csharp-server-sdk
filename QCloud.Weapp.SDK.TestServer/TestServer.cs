@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace QCloud.WeApp.SDK.TestServer
+namespace QCloud.WeApp.TestServer
 {
     public class TestServer
     {
@@ -15,6 +15,14 @@ namespace QCloud.WeApp.SDK.TestServer
 
         private HttpListener http;
         private Thread thread;
+
+        public bool IsStarted
+        {
+            get
+            {
+                return http.IsListening;
+            }
+        }
 
         public TestServer(string serverUrl)
         {
@@ -30,26 +38,28 @@ namespace QCloud.WeApp.SDK.TestServer
             thread = new Thread(new ThreadStart(delegate
             {
                 Console.WriteLine($"Test server listening at {http.Prefixes.First()}");
-                while (http.IsListening)
+                try
                 {
-                    HttpListenerContext context;
-                    try
+                    while (http.IsListening)
                     {
-                        context = http.GetContext();
+                        HttpListenerContext context = http.GetContext();
+                        // process in a new thread
+                        new Thread(new ThreadStart(delegate
+                        {
+                            HttpListenerRequest request = context.Request;
+                            HttpListenerResponse response = context.Response;
+                            HttpHandler handler = new HttpHandler(request, response);
+                            HandleResult result = handler.Handle();
+                            if (OnServerHandleResult != null)
+                            {
+                                OnServerHandleResult.Invoke(result);
+                            }
+                        })).Start();
                     }
-                    catch (Exception error)
-                    {
-                        Console.WriteLine(error);
-                        return;
-                    }
-                    HttpListenerRequest request = context.Request;
-                    HttpListenerResponse response = context.Response;
-                    HttpHandler handler = new HttpHandler(request, response);
-                    HandleResult result = handler.Handle();
-                    if (OnServerHandleResult != null)
-                    {
-                        OnServerHandleResult.Invoke(result);
-                    }
+                }
+                catch (Exception)
+                {
+                    return;
                 }
             }));
             thread.Start();
@@ -57,11 +67,9 @@ namespace QCloud.WeApp.SDK.TestServer
 
         public void Stop()
         {
-            if (thread != null)
+            if (http.IsListening)
             {
-                http.Stop();
-                thread.Interrupt();
-                thread = null;
+                http.Close();
             }
         }
     }

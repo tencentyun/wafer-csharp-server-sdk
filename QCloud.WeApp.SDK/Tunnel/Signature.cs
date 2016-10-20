@@ -9,16 +9,6 @@ namespace QCloud.WeApp.SDK.Tunnel
 {
     internal static class Signature
     {
-        public static string ComputeSignature(this string input)
-        {
-            var skey = ConfigurationManager.CurrentConfiguration.TunnelSignatureKey;
-            return (input + skey).HashSha1();
-        }
-
-        public static bool CheckSignature(this string input, string signature)
-        {
-            return input.ComputeSignature() == signature;
-        }
 
         public static string HashSha1(this string input)
         {

@@ -6,8 +6,8 @@
     <ProjectGuid>{0C62E145-8C95-4AF0-9E8C-47B8D27B33AE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>QCloud.WeApp.SDK.Tests</RootNamespace>
-    <AssemblyName>QCloud.WeApp.SDK.Tests</AssemblyName>
+    <RootNamespace>QCloud.WeApp.Tests</RootNamespace>
+    <AssemblyName>QCloud.WeApp.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -67,24 +67,26 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Tunnel\TunnelServiceTest_Get.cs" />
-    <Compile Include="Tunnel\TunnelServiceTestHelper.cs" />
-    <Compile Include="Authorization\LoginServiceTest_Check.cs" />
-    <Compile Include="Authorization\LoginServiceTest_Login.cs" />
-    <Compile Include="Authorization\LoginServiceTestHelper.cs" />
-    <Compile Include="Authorization\LoginServiceTest.cs" />
-    <Compile Include="Tunnel\TunnelServiceTest.cs" />
-    <Compile Include="HttpMock.cs" />
+    <Compile Include="Cases\TunnelServiceTest_Tunnel.cs" />
+    <Compile Include="Cases\TunnelServiceTest_Post.cs" />
+    <Compile Include="Cases\TunnelServiceTest_Get.cs" />
+    <Compile Include="Cases\TunnelServiceTestHelper.cs" />
+    <Compile Include="Cases\LoginServiceTest_Check.cs" />
+    <Compile Include="Cases\LoginServiceTest_Login.cs" />
+    <Compile Include="Cases\LoginServiceTestHelper.cs" />
+    <Compile Include="Cases\LoginServiceTest.cs" />
+    <Compile Include="Cases\TunnelServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestInitialization.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QCloud.WeApp.Demo.MVC\QCloud.WeApp.Demo.MVC.csproj">
       <Project>{65262f3f-8402-4970-be3d-5c122db501e9}</Project>
       <Name>QCloud.WeApp.Demo.MVC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\QCloud.Weapp.SDK.TestServer\QCloud.WeApp.SDK.TestServer.csproj">
+    <ProjectReference Include="..\QCloud.Weapp.SDK.TestServer\QCloud.WeApp.TestServer.csproj">
       <Project>{848dad42-4cf9-444b-95f9-0b3057921290}</Project>
-      <Name>QCloud.WeApp.SDK.TestServer</Name>
+      <Name>QCloud.WeApp.TestServer</Name>
     </ProjectReference>
     <ProjectReference Include="..\QCloud.WeApp.SDK\QCloud.WeApp.SDK.csproj">
       <Project>{ca988b0d-40f0-4951-a620-490e4f2ba1a5}</Project>

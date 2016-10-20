@@ -51,7 +51,8 @@ namespace QCloud.WeApp.SDK
                 throw new Exception($"Server Error: Response with {response.StatusCode}");
             }
 
-            using (StreamReader responseReader = new StreamReader(response.GetResponseStream()))
+            var responseStream = response.GetResponseStream();
+            using (StreamReader responseReader = new StreamReader(responseStream))
             {
                 return responseReader.ReadToEnd();
             }

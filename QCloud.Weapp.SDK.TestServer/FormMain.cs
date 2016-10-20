@@ -12,7 +12,7 @@ using System.Web.Http.Common;
 using System.Net;
 using System.Threading;
 
-namespace QCloud.WeApp.SDK.TestServer
+namespace QCloud.WeApp.TestServer
 {
     public partial class FormMain : Form
     {
@@ -98,6 +98,11 @@ namespace QCloud.WeApp.SDK.TestServer
         private void ClearLog(object sender, EventArgs e)
         {
             listViewRequest.Items.Clear();
+        }
+
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            server.Stop();
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QCloud.WeApp.SDK.TestServer
+namespace QCloud.WeApp.TestServer
 {
     public static class Program
     {

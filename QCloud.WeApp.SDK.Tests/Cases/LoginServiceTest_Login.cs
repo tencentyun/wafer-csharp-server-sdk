@@ -1,18 +1,18 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QCloud.WeApp.SDK.Authorization;
-using System.Web;
-using System.Linq;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Language.Flow;
-using System.Collections.Specialized;
-using System.Threading;
-using System.Diagnostics;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using QCloud.WeApp.SDK.Authorization;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Web;
 
-namespace QCloud.WeApp.SDK.Tests.Authorization
+namespace QCloud.WeApp.Tests
 {
     public partial class LoginServiceTest
     {
@@ -22,7 +22,7 @@ namespace QCloud.WeApp.SDK.Tests.Authorization
         {
             var mock = helper.CreateLoginHttpMock(code: "valid-code", encryptData: "valid-data");
 
-            var loginService = new LoginService(mock.Request.Object, mock.Response.Object);
+            var loginService = new LoginService(mock.Object.Request, mock.Object.Response);
             UserInfo userInfo = loginService.Login();
 
             Assert.IsNotNull(userInfo);
@@ -35,7 +35,7 @@ namespace QCloud.WeApp.SDK.Tests.Authorization
                 return helper.CheckBodyHasMagicId(result) && helper.CheckBodyHasSession(result);
             };
 
-            mock.Response.Verify(x => x.Write(It.Is((string body) => bodyMatch(body))), Times.Once());
+            mock.Verify(x => x.Response.Write(It.Is((string body) => bodyMatch(body))), Times.Once());
         }
 
         [TestMethod]
@@ -94,7 +94,7 @@ namespace QCloud.WeApp.SDK.Tests.Authorization
         {
             var mock = helper.CreateLoginHttpMock(code, encryptData);
 
-            var loginService = new LoginService(mock.Request.Object, mock.Response.Object);
+            var loginService = new LoginService(mock.Object.Request, mock.Object.Response);
 
             LoginServiceException errorShouldThrow = null;
             try
@@ -114,7 +114,7 @@ namespace QCloud.WeApp.SDK.Tests.Authorization
                 return helper.CheckBodyHasMagicId(result) && result["error"] != null;
             };
 
-            mock.Response.Verify(x => x.Write(It.Is((string body) => bodyMatch(body))), Times.Once());
+            mock.Verify(x => x.Response.Write(It.Is((string body) => bodyMatch(body))), Times.Once());
 
             return errorShouldThrow;
         }

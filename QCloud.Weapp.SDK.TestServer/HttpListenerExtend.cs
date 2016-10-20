@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QCloud.WeApp.SDK.TestServer
+namespace QCloud.WeApp.TestServer
 {
     public static class HttpListenerExtend
     {

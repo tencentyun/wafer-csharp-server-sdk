@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -77,7 +78,15 @@ namespace QCloud.WeApp.SDK.Tunnel
                 try
                 {
                     var emitResult = Request("/ws/push", data);
-                    IEnumerable<string> invalidTunnels = emitResult.invalidTunnels;
+                    IEnumerable<string> invalidTunnels;
+                    if (emitResult?.invalidTunnels == null)
+                    {
+                        invalidTunnels = new List<string>();
+                    }
+                    else
+                    {
+                        invalidTunnels = (emitResult?.invalidTunnels as JArray).ToList().Select(x => x.Value<string>());
+                    }
                     return new EmitResult()
                     {
                         TunnelIvalidInfos = invalidTunnels.Select(tunnelId => new TunnelInvalidInfo()

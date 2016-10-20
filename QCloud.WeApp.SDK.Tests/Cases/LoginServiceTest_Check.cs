@@ -1,18 +1,18 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QCloud.WeApp.SDK.Authorization;
-using System.Web;
-using System.Linq;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Language.Flow;
-using System.Collections.Specialized;
-using System.Threading;
-using System.Diagnostics;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using QCloud.WeApp.SDK.Authorization;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Web;
 
-namespace QCloud.WeApp.SDK.Tests.Authorization
+namespace QCloud.WeApp.Tests
 {
     public partial class LoginServiceTest
     {
@@ -20,13 +20,13 @@ namespace QCloud.WeApp.SDK.Tests.Authorization
         [Description("检查登陆正常流程")]
         public void TestCheck()
         {
-            HttpMock mock = helper.CreateCheckHttpMock("valid-id", "valid-key");
-            LoginService service = new LoginService(mock.Request.Object, mock.Response.Object);
+            var mock = helper.CreateCheckHttpMock("valid-id", "valid-key");
+            LoginService service = new LoginService(mock.Object.Request, mock.Object.Response);
             Console.WriteLine("Check");
             UserInfo userInfo = service.Check();
             Assert.IsNotNull(userInfo);
 
-            mock.Response.Verify(x => x.Write(It.IsAny<string>()), Times.Never());
+            mock.Verify(x => x.Response.Write(It.IsAny<string>()), Times.Never());
         }
 
         [TestMethod]
@@ -99,7 +99,7 @@ namespace QCloud.WeApp.SDK.Tests.Authorization
         {
             var mock = helper.CreateCheckHttpMock(id, skey);
 
-            var loginService = new LoginService(mock.Request.Object, mock.Response.Object);
+            var loginService = new LoginService(mock.Object.Request, mock.Object.Response);
 
             LoginServiceException errorShouldThrow = null;
             try
@@ -124,7 +124,7 @@ namespace QCloud.WeApp.SDK.Tests.Authorization
                 return result["error"].Value<string>() == "ERR_INVALID_SESSION" ^ !expectInvalidSession.Value;
             };
 
-            mock.Response.Verify(x => x.Write(It.Is((string body) => bodyMatch(body))), Times.Once());
+            mock.Verify(x => x.Response.Write(It.Is((string body) => bodyMatch(body))), Times.Once());
 
             return errorShouldThrow;
         }
