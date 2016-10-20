@@ -22,7 +22,13 @@ namespace QCloud.WeApp.TestServer
             this.request = request;
             this.response = response;
             url = request.RawUrl;
-            body = request.GetRawEntityBody();
+            if (request.HasEntityBody)
+            {
+                body = request.GetRawEntityBody();
+            } else
+            {
+                body = null;
+            }
         }
 
         public HandleResult Handle()

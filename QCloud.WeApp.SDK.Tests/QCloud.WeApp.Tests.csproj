@@ -80,10 +80,14 @@
     <Compile Include="TestInitialization.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QCloud.WeApp.Demo.MVC\QCloud.WeApp.Demo.MVC.csproj">
-      <Project>{65262f3f-8402-4970-be3d-5c122db501e9}</Project>
-      <Name>QCloud.WeApp.Demo.MVC</Name>
-    </ProjectReference>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="sdk.test.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Specification.md" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\QCloud.Weapp.SDK.TestServer\QCloud.WeApp.TestServer.csproj">
       <Project>{848dad42-4cf9-444b-95f9-0b3057921290}</Project>
       <Name>QCloud.WeApp.TestServer</Name>
@@ -93,15 +97,6 @@
       <Name>QCloud.WeApp.SDK</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-    <None Include="sdk.test.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Specification.md" />
-  </ItemGroup>
-  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

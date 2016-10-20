@@ -49,10 +49,17 @@ namespace QCloud.WeApp.TestServer
                             HttpListenerRequest request = context.Request;
                             HttpListenerResponse response = context.Response;
                             HttpHandler handler = new HttpHandler(request, response);
-                            HandleResult result = handler.Handle();
-                            if (OnServerHandleResult != null)
+                            try
                             {
-                                OnServerHandleResult.Invoke(result);
+                                HandleResult result = handler.Handle();
+                                if (OnServerHandleResult != null)
+                                {
+                                    OnServerHandleResult.Invoke(result);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                // ignore
                             }
                         })).Start();
                     }
