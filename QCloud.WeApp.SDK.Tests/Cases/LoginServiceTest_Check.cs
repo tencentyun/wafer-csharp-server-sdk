@@ -22,7 +22,6 @@ namespace QCloud.WeApp.Tests
         {
             var mock = helper.CreateCheckHttpMock("valid-id", "valid-key");
             LoginService service = new LoginService(mock.Object.Request, mock.Object.Response);
-            Console.WriteLine("Check");
             UserInfo userInfo = service.Check();
             Assert.IsNotNull(userInfo);
 

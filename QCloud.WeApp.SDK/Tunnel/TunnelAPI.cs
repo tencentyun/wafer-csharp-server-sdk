@@ -79,13 +79,13 @@ namespace QCloud.WeApp.SDK.Tunnel
                 {
                     var emitResult = Request("/ws/push", data);
                     IEnumerable<string> invalidTunnels;
-                    if (emitResult?.invalidTunnels == null)
+                    if (emitResult?.invalidTunnelIds == null)
                     {
                         invalidTunnels = new List<string>();
                     }
                     else
                     {
-                        invalidTunnels = (emitResult?.invalidTunnels as JArray).ToList().Select(x => x.Value<string>());
+                        invalidTunnels = (emitResult?.invalidTunnelIds as JArray).ToList().Select(x => x.Value<string>());
                     }
                     return new EmitResult()
                     {

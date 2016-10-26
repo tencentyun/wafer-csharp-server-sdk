@@ -102,7 +102,7 @@ namespace QCloud.WeApp.Tests
             {
                 type = "message",
                 tunnelId = "tunnel1",
-                content = "unknow-raw"
+                content = "unknown-raw"
             }.ToJson()));
 
             var tunnelService = new TunnelService(httpContextMock.Object.Request, httpContextMock.Object.Response);
@@ -111,7 +111,7 @@ namespace QCloud.WeApp.Tests
 
             Func<TunnelMessage, bool> IsValidMessage = message =>
             {
-                return message.Type == "UnknownRaw" && message.Content == "unknow-raw";
+                return message.Type == "UnknownRaw" && message.Content == "unknown-raw";
             };
 
             tunnelHandlerMock.Verify(
@@ -132,7 +132,7 @@ namespace QCloud.WeApp.Tests
             var httpContextMock = helper.CreateTunnelHttpContextMock("POST");
             helper.SetupRequestBody(httpContextMock, helper.BuildPacket(new
             {
-                type = "unknow",
+                type = "unknown",
                 tunnelId = "tunnel1"
             }.ToJson()));
 
@@ -185,7 +185,7 @@ namespace QCloud.WeApp.Tests
         public void TestPostBadRequest()
         {
             var httpContextMock = helper.CreateTunnelHttpContextMock("POST");
-            helper.SetupRequestBody(httpContextMock, "illgal request");
+            helper.SetupRequestBody(httpContextMock, "illegal request");
 
             var tunnelService = new TunnelService(httpContextMock.Object.Request, httpContextMock.Object.Response);
             var tunnelHandlerMock = new Mock<ITunnelHandler>();

@@ -29,8 +29,6 @@ namespace QCloud.WeApp.Tests
 
             Func<string, bool> bodyMatch = (string body) =>
             {
-                Console.WriteLine("=======Response========");
-                Console.WriteLine(body);
                 JObject result = JObject.Parse(body);
                 return helper.CheckBodyHasMagicId(result) && helper.CheckBodyHasSession(result);
             };
@@ -108,8 +106,6 @@ namespace QCloud.WeApp.Tests
 
             Func<string, bool> bodyMatch = (string body) =>
             {
-                Console.WriteLine("=======Response========");
-                Console.WriteLine(body);
                 JObject result = JObject.Parse(body);
                 return helper.CheckBodyHasMagicId(result) && result["error"] != null;
             };
