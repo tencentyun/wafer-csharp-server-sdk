@@ -14,9 +14,9 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
-    <OutputPath>..\wiki\output\</OutputPath>
+    <OutputPath>..\wiki\doc-source\</OutputPath>
     <HtmlHelpName>API</HtmlHelpName>
-    <Language>zh-CN</Language>
+    <Language>en-US</Language>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\QCloud.WeApp.SDK\QCloud.WeApp.SDK.csproj" xmlns="" />
     </DocumentationSources>
@@ -29,10 +29,10 @@
     <CleanIntermediates>True</CleanIntermediates>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
-    <NamespaceGrouping>False</NamespaceGrouping>
+    <NamespaceGrouping>True</NamespaceGrouping>
     <SyntaxFilters>C#</SyntaxFilters>
     <SdkLinkTarget>Blank</SdkLinkTarget>
-    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
     <PresentationStyle>Markdown</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>MemberName</NamingMethod>
@@ -116,12 +116,16 @@
       <NamespaceSummaryItem name="QCloud.WeApp.SDK.Authorization" isDocumented="True">提供微信小程序鉴权服务</NamespaceSummaryItem>
       <NamespaceSummaryItem name="QCloud.WeApp.SDK.Tunnel" isDocumented="True">提供微信小程序信道服务</NamespaceSummaryItem>
     </NamespaceSummaries>
-    <ProjectSummary>微信小程序 C# SDK - API 文档</ProjectSummary>
+    <ProjectSummary>微信小程序服务端 SDK API</ProjectSummary>
     <TransformComponentArguments>
       <Argument Key="maxVersionParts" Value="2" xmlns="" />
       <Argument Key="includeEnumValues" Value="true" xmlns="" />
       <Argument Key="baseSourceCodeUrl" Value="" xmlns="" />
     </TransformComponentArguments>
+    <WebsiteSdkLinkType>None</WebsiteSdkLinkType>
+    <HtmlSdkLinkType>None</HtmlSdkLinkType>
+    <IncludeFavorites>False</IncludeFavorites>
+    <BinaryTOC>True</BinaryTOC>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
@@ -148,14 +152,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy $(ProjectDir)_Sidebar.md $(OutputPath) /Y
-xcopy $(OutputPath)* $(SolutionDir)wiki\ /E /Y</PostBuildEvent>
+    <PostBuildEvent>node $(SolutionDir)wiki\generate.js</PostBuildEvent>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
-  <ItemGroup>
-    <ContentLayout Include="Content Layout.content" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="_Sidebar.md" />
-  </ItemGroup>
 </Project>

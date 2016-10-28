@@ -10,7 +10,7 @@ namespace QCloud.WeApp.SDK
     /// <summary>
     /// 提供快捷的 JSON 拓展方法
     /// </summary>
-    public static class JsonHelper
+    static class JsonHelper
     {
         /// <summary>
         /// 把对象序列化为 JSON 字符串
