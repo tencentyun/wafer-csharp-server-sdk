@@ -8,7 +8,9 @@ using System.Net.Http;
 
 namespace QCloud.WeApp.SDK.Authorization
 {
-
+    /// <summary>
+    /// 登录服务，提供登录和检查登录的接口
+    /// </summary>
     public class LoginService
     {
         private HttpRequestBase Request;
@@ -37,9 +39,12 @@ namespace QCloud.WeApp.SDK.Authorization
 
         /// <summary>
         /// 请求登陆，获得用户信息。<para />
-        /// 无论登录成功与否，会直接进行 HTTP 响应登录结果，使用该方法后无需再进行 HTTP 响应。<para />
-        /// 需要获取登陆结果的，可以直接 await 登录方法的返回值。需要获取登陆错误的，请直接使用 try-catch 捕获。
+        /// 无论登录成功与否，该方法都会直接进行 HTTP 响应登录结果，使用该方法后无需再进行 HTTP 响应。<para />
         /// </summary>
+        /// <returns>登录成功后获得用户信息</returns>
+        /// <exception cref="LoginServiceException">
+        /// 如果登录失败，将会抛出异常。
+        /// </exception>
         public UserInfo Login()
         {
             var code = GetHeader(Constants.WX_HEADER_CODE);
@@ -66,10 +71,12 @@ namespace QCloud.WeApp.SDK.Authorization
         }
 
         /// <summary>
-        /// 检查当前请求是否包含已登录的会话，如果已登录，会返回用户信息，否则将抛出异常
+        /// 检查当前请求是否包含已登录的会话
         /// </summary>
-        /// <param name="outputError">如果指定 outputError 为 false，则不会输出登录</param>
-        /// <returns>用户信息</returns>
+        /// <returns>如果已登录，返回当前用户信息</returns>
+        /// <exception cref="LoginServiceException">
+        /// 如果检查登录失败，或者当前用户登录态不正确，将会抛出异常
+        /// </exception>
         public UserInfo Check()
         {
             string id = GetHeader(Constants.WX_HEADER_ID);

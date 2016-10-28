@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{028688FC-F480-4E2E-A657-7F627C164EAE}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		API.md = API.md
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -16,6 +17,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QCloud.WeApp.TestServer", "QCloud.Weapp.SDK.TestServer\QCloud.WeApp.TestServer.csproj", "{848DAD42-4CF9-444B-95F9-0B3057921290}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QCloud.WeApp.Tests", "QCloud.WeApp.SDK.Tests\QCloud.WeApp.Tests.csproj", "{0C62E145-8C95-4AF0-9E8C-47B8D27B33AE}"
+EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "QCloud.Weapp.SDK.Documentation", "QCloud.Weapp.SDK.Documentation\QCloud.Weapp.SDK.Documentation.shfbproj", "{257962D3-6CC4-4E15-8D7F-6ADE435FFAC2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CA988B0D-40F0-4951-A620-490E4F2BA1A5} = {CA988B0D-40F0-4951-A620-490E4F2BA1A5}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +45,10 @@ Global
 		{0C62E145-8C95-4AF0-9E8C-47B8D27B33AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C62E145-8C95-4AF0-9E8C-47B8D27B33AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C62E145-8C95-4AF0-9E8C-47B8D27B33AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{257962D3-6CC4-4E15-8D7F-6ADE435FFAC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{257962D3-6CC4-4E15-8D7F-6ADE435FFAC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{257962D3-6CC4-4E15-8D7F-6ADE435FFAC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{257962D3-6CC4-4E15-8D7F-6ADE435FFAC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

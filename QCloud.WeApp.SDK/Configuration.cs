@@ -9,14 +9,15 @@ using System.Threading.Tasks;
 namespace QCloud.WeApp.SDK
 {
     /// <summary>
-    /// 表示 SDK 配置
+    /// 表示 SDK 配置。想要进行配置，需要使用 <c>ConfigurationManager</c>
     /// </summary>
+    /// <see cref="ConfigurationManager" />
     [JsonObject]
     public class Configuration
     {
 
         /// <summary>
-        /// 当前使用 SDK 服务器的主机，该主机需要外网可访问
+        /// 当前使用 SDK 服务器的主机，该主机需要外网可访问。信道服务器依赖该主机名推送信道消息到业务服务器。
         /// </summary>
         [JsonProperty("serverHost")]
         public string ServerHost { get; set; }

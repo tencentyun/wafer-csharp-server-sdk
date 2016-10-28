@@ -141,7 +141,7 @@ namespace QCloud.WeApp.Tests
                     code = 0,
                     data = new
                     {
-                        invalidTunnels = new string[] { "tunnel1", "tunnel2" }
+                        invalidTunnelIds = new string[] { "tunnel1", "tunnel2" }
                     }.ToJson()
                 }.ToJson());
 
