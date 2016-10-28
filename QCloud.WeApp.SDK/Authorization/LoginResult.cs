@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QCloud.WeApp.SDK.Authorization
 {
-    public class LoginResult
+    internal class LoginResult
     {
         public string Id { get; set; }
 

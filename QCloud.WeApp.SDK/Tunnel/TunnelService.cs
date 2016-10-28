@@ -19,7 +19,7 @@ namespace QCloud.WeApp.SDK.Tunnel
         private HttpResponseBase Response;
 
         /// <summary>
-        /// 提供 WebSocket 信道服务
+        /// 提供 WebSocket 信道服务（ASP.NET MVC）
         /// </summary>
         public TunnelService(HttpRequestBase request, HttpResponseBase response)
         {
@@ -36,7 +36,7 @@ namespace QCloud.WeApp.SDK.Tunnel
         }
 
         /// <summary>
-        /// 提供 WebSocket 信道服务
+        /// 提供 WebSocket 信道服务（ASP.NET WebForm）
         /// </summary>
         public TunnelService(HttpRequest request, HttpResponse response) : this(new HttpRequestWrapper(request), new HttpResponseWrapper(response)) { }
         

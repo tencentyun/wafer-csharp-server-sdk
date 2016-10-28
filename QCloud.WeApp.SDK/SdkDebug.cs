@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace QCloud.WeApp.SDK
 {
-
     internal static class SdkDebug
     {
-
+#if DEBUG
         internal class IndentContext : IDisposable
         {
             public IndentContext()
@@ -22,6 +21,12 @@ namespace QCloud.WeApp.SDK
                 Debug.Unindent();
             }
         }
+#else
+        internal class IndentContext : IDisposable {
+            public IndentContext() { }
+            public void Dispose() { }
+        }
+#endif
 
         public static IndentContext Indent()
         {
@@ -30,6 +35,7 @@ namespace QCloud.WeApp.SDK
 
         public static void WriteLine(object content, bool outputOrderMark = false)
         {
+#if DEBUG
             if (content == null)
             {
                 Debug.WriteLine(null);
@@ -43,6 +49,7 @@ namespace QCloud.WeApp.SDK
             {
                 Debug.WriteLine(content);
             }
+#endif
         }
 
         public static IndentContext WriteLineAndIndent(string content)

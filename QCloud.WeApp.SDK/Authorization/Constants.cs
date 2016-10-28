@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace QCloud.WeApp.SDK.Authorization
 {
+    /// <summary>
+    /// 包含登录服务使用到的常量
+    /// </summary>
     public static class Constants
     {
         internal const string WX_SESSION_MAGIC_ID = "F2C224D4-2BCE-4C64-AF9F-A6D872000D1A";

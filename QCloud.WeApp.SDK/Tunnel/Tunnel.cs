@@ -9,6 +9,9 @@ namespace QCloud.WeApp.SDK.Tunnel
     /// <summary>
     /// 表示一个 WebSocket 信道
     /// </summary>
+    /// <remarks>
+    /// 信道不能创建，可以通过静态方法 Tunnel.GetById 获取具有指定 ID 的信道
+    /// </remarks>
     public class Tunnel
     {
         /// <summary>
@@ -20,7 +23,11 @@ namespace QCloud.WeApp.SDK.Tunnel
             return new Tunnel(tunnelId);
         }
 
-        public Tunnel(string tunnelId)
+        /// <summary>
+        /// 根据信道 ID 获取实例化信道
+        /// </summary>
+        /// <param name="tunnelId"></param>
+        internal Tunnel(string tunnelId)
         {
             if (tunnelId == null) throw new ArgumentNullException("tunnelId", "信道 ID 不能为空！");
             Id = tunnelId;
@@ -40,7 +47,7 @@ namespace QCloud.WeApp.SDK.Tunnel
         /// 通过信道发送消息
         /// </summary>
         /// <param name="messageType">消息类型</param>
-        /// <param name="messageContent">消息内容，可以为任意类型，不过对象必须可以被序列化</param>
+        /// <param name="messageContent">消息内容，可以为任意类型，不过对象必须可以被序列化，建议使用 JSONObject</param>
         /// <returns>返回信道发送结果，可能包含无效信道列表</returns>
         /// <exception cref="EmitException">网络不可用或信道服务器不可用</exception>
         public EmitResult Emit(string messageType, object messageContent = null) {

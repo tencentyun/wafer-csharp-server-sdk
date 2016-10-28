@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace QCloud.WeApp.SDK.Tunnel
 {
+    /// <summary>
+    /// 表示把消息往信道发送的结果
+    /// </summary>
+    /// <seealso cref="Tunnel.Emit(string, object)"/>
+    /// <seealso cref="TunnelRoom.Broadcast(string, object)"/>
     public class EmitResult
     {
         /// <summary>

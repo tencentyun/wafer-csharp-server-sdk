@@ -12,10 +12,10 @@ namespace QCloud.WeApp.SDK.Tunnel
     [Serializable]
     public class EmitException : Exception
     {
-        public EmitException() { }
-        public EmitException(string message) : base(message) { }
-        public EmitException(string message, Exception inner) : base(message, inner) { }
-        protected EmitException(
+        internal EmitException() { }
+        internal EmitException(string message) : base(message) { }
+        internal EmitException(string message, Exception inner) : base(message, inner) { }
+        internal protected EmitException(
           System.Runtime.Serialization.SerializationInfo info,
           System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }

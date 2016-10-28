@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace QCloud.WeApp.SDK.Tunnel
 {
+    /// <summary>
+    /// 房间维护一批信道的集合，可以通过广播方法向房间里的所有信道推送消息
+    /// </summary>
     public class TunnelRoom
     {
         private List<Tunnel> Tunnels;
@@ -27,7 +30,7 @@ namespace QCloud.WeApp.SDK.Tunnel
         /// <summary>
         /// 添加信道到房间
         /// </summary>
-        /// <param name="tunnel"></param>
+        /// <param name="tunnel">要添加的信道</param>
         public void AddTunnel(Tunnel tunnel)
         {
             Tunnels.Add(tunnel);
@@ -36,7 +39,7 @@ namespace QCloud.WeApp.SDK.Tunnel
         /// <summary>
         /// 移除指定信道
         /// </summary>
-        /// <param name="tunnel"></param>
+        /// <param name="tunnel">要移除的信道</param>
         public void RemoveTunnel(Tunnel tunnel)
         {
             this.RemoveTunnelById(tunnel.Id);
@@ -45,7 +48,7 @@ namespace QCloud.WeApp.SDK.Tunnel
         /// <summary>
         /// 根据 ID 移除信道
         /// </summary>
-        /// <param name="tunnelId"></param>
+        /// <param name="tunnelId">要移除的信道的 ID</param>
         public void RemoveTunnelById(string tunnelId)
         {
             Tunnels.RemoveAll(x => x.Id == tunnelId);

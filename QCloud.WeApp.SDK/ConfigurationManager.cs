@@ -10,6 +10,7 @@ namespace QCloud.WeApp.SDK
 {
     /// <summary>
     /// SDK 配置管理，使用该类对 SDK 进行配置
+    /// <seealso cref="Configuration"/>
     /// </summary>
     public static class ConfigurationManager
     {

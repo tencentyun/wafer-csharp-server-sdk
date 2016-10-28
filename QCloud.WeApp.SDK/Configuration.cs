@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace QCloud.WeApp.SDK
 {
     /// <summary>
-    /// 表示 SDK 配置。想要进行配置，需要使用 <c>ConfigurationManager</c>
+    /// 表示 SDK 配置。想要进行配置，需要使用
     /// </summary>
-    /// <see cref="ConfigurationManager" />
+    /// <seealso cref="ConfigurationManager"/>
     [JsonObject]
     public class Configuration
     {

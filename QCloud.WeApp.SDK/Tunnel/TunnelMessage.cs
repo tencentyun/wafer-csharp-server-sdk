@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 
 namespace QCloud.WeApp.SDK.Tunnel
 {
+    /// <summary>
+    /// 表示一个信道消息
+    /// </summary>
     public class TunnelMessage
     {
         internal TunnelMessage(string messageRaw)
@@ -24,8 +27,14 @@ namespace QCloud.WeApp.SDK.Tunnel
             }
         }
 
+        /// <summary>
+        /// 消息的类型
+        /// </summary>
         public string Type { get; internal set; }
 
+        /// <summary>
+        /// 消息的内容
+        /// </summary>
         public dynamic Content { get; internal set; }
     }
 }

@@ -1,5 +1,8 @@
 ﻿namespace QCloud.WeApp.SDK.Tunnel
 {
+    /// <summary>
+    /// 表示信道无效的类型
+    /// </summary>
     public enum TunnelInvalidType
     {
         /// <summary>
