@@ -1,16 +1,22 @@
 腾讯云微信小程序服务端 SDK - C#
-=================================
+=============================
 
-本 SDK 是[腾讯云微信小程序一站式解决方案](https://github.com/tencentyun/weapp-solution)（下文简称「解决方案」）的组成部分。业务服务器可通过本 SDK 为小程序客户端提供云端服务支持，包括：
+[![license](https://img.shields.io/github/license/tencentyun/weapp-java-server-sdk.svg?style=flat-square)](LICENSE)
+
+本 SDK 是[腾讯云微信小程序一站式解决方案][weapp-solution]（下文简称「解决方案」）的组成部分。业务服务器可通过本 SDK 为小程序客户端提供云端服务支持，包括：
 
 1. 登录态鉴权服务
 2. 信道服务
 
 ## SDK 获取
 
-本项目遵守 [MIT](LICENSE) 协议，可以直接[下载 SDK 源码](https://github.com/tencentyun/weapp-csharp-server-sdk/archive/master.zip)进行修改、编译和发布。
+本项目遵守 [MIT](LICENSE) 协议，可以直接[下载 SDK 源码][sdk-download]进行修改、编译和发布。
 
-> 如果从[腾讯云微信小程序控制台](https://console.qcloud.com/la)购买解决方案并选择 C# 语言，则分配的业务服务器里已经部署了本 SDK 和 Demo 的发行版本。
+> 如果从[腾讯云微信小程序控制台][la-console]购买解决方案并选择 C# 语言，则分配的业务服务器里已经部署了本 SDK 和 Demo 的发行版本。
+
+## API
+
+请参考项目 [Wiki][api-url]。
 
 ## 使用示例（ASP.NET MVC）
 
@@ -24,7 +30,7 @@
 
 ### 配置 SDK
 
-SDK **必须**经过初始化配置之后才能使用。你可以选择代码初始化或者使用配置文件初始化。初始化配置建议在 `Application_Start` 里进行。
+SDK 必须经过初始化配置之后才能使用。可以选择使用代码初始化或者使用配置文件初始化。初始化配置建议在 `Application_Start` 里进行。
 
 使用代码初始化：
 
@@ -55,7 +61,7 @@ var configFilePath = "C:\\qcloud\sdk.config";
 ConfigurationManager.SetupFromFile(configFilePath);
 ```
 
-关于 SDK 配置字段的含义以及配置文件格式的更多信息，请参考[服务端 SDK 配置](https://github.com/tencentyun/weapp-solution/wiki/%E6%9C%8D%E5%8A%A1%E7%AB%AF-SDK-%E9%85%8D%E7%BD%AE)。
+关于 SDK 配置字段的含义以及配置文件格式的更多信息，请参考[服务端 SDK 配置][sdk-config-wiki]。
 
 ### 使用 SDK 提供登录服务
 
@@ -82,8 +88,9 @@ public class LoginController : Controller
 
             Debug.WriteLine(userInfo);
         }
-        catch (Exception ex)
+        catch (LoginServiceException ex)
         {
+            // 登录失败会抛出登录异常
             Debug.WriteLine(ex);
         }
 
@@ -93,9 +100,7 @@ public class LoginController : Controller
 }
 ```
 
-> 如果登录失败，`Login()` 方法会抛出异常，需要使用 try-catch 来捕获异常。该异常可以不用处理，抛出来是为了方便业务服务器可以进行记录和监控。
-
-[查看 Login() 方法的 API](https://github.com/tencentyun/weapp-csharp-server-sdk/wiki/Method+QCloud.WeApp.SDK.Authorization.LoginService.Login) 以查看更详细的内容。
+> 如果登录失败，[Login()][login-api] 方法会抛出异常，需要使用 try-catch 来捕获异常。该异常可以不用处理，抛出来是为了方便业务服务器可以进行记录和监控。
 
 #### 获取会话状态
 
@@ -139,12 +144,10 @@ public class UserController : Controller
 }
 ```
 
-> 如果检查会话失败，或者会话无效，`Check()` 方法会抛出异常，需要使用 try-catch 来捕获异常。该异常可以不用处理，抛出来是为了方便业务服务器可以进行记录和监控。
-
-[查看 Check() 方法的 API](https://github.com/tencentyun/weapp-csharp-server-sdk/wiki/Method+QCloud.WeApp.SDK.Authorization.LoginService.Check) 以查看更详细的内容。
+> 如果检查会话失败，或者会话无效，[Check()][check-api] 方法会抛出异常，需要使用 try-catch 来捕获异常。该异常可以不用处理，抛出来是为了方便业务服务器可以进行记录和监控。
 
 
-阅读解决方案文档中的[鉴权服务](https://github.com/tencentyun/weapp-solution/wiki/%E9%89%B4%E6%9D%83%E6%9C%8D%E5%8A%A1)了解更多解决方案中关于鉴权服务的技术资料。
+阅读解决方案文档中的[鉴权服务][auth-service-wiki]了解更多解决方案中关于鉴权服务的技术资料。
 
 ### 使用 SDK 提供信道服务
 
@@ -183,18 +186,28 @@ public class TunnelController : Controller
 }
 ```
 
-使用信道服务需要实现处理器，来获取处理信道的各种事件，具体可参考接口 [ITunnelHandler](https://github.com/tencentyun/weapp-csharp-server-sdk/wiki/Interface+QCloud.WeApp.SDK.Tunnel.ITunnelHandler) 的 API 文档以及配套 Demo 中的 [ChatTunnelHandler](https://github.com/tencentyun/weapp-csharp-server-sdk/blob/master/QCloud.WeApp.Demo.MVC/Business/ChatTunnelHandler.cs) 的实现。
+使用信道服务需要实现处理器，来获取处理信道的各种事件，具体可参考接口 [ITunnelHandler][tunnel-handler-api] 的 API 文档以及配套 Demo 中的 [ChatTunnelHandler][chat-handler-source] 的实现。
 
-阅读解决方案文档中的[信道服务](https://github.com/tencentyun/weapp-solution/wiki/%E9%89%B4%E6%9D%83%E6%9C%8D%E5%8A%A1)了解更多解决方案中关于鉴权服务的技术资料。
-
-## API
-
-C# SDK 所有 API 请移步本仓库 [Wiki](https://github.com/tencentyun/weapp-csharp-server-sdk/wiki) 查看。
+阅读解决方案文档中的[信道服务][tunnel-service-wiki]了解更多解决方案中关于鉴权服务的技术资料。
 
 ## 反馈和贡献
 
-如有问题，欢迎使用 [Issues](https://github.com/CFETeam/qcloud-weapp-server-sdk-csharp/issues/new) 提出，也欢迎广大开发者给我们提 [Pull Request](https://github.com/CFETeam/qcloud-weapp-server-sdk-csharp/pulls)。
+如有问题，欢迎使用 [Issues][new-issue] 提出，也欢迎广大开发者给我们提 [Pull Request][pr]。
 
 ## LICENSE
 
 [MIT](LICENSE)
+
+[weapp-solution]: https://github.com/tencentyun/weapp-solution "查看腾讯云微信小程序解决方案"
+[sdk-download]: https://github.com/tencentyun/weapp-csharp-server-sdk/archive/master.zip "下载 C# SDK 源码"
+[la-console]: https://console.qcloud.com/la "打开腾讯云微信小程序一站式解决方案控制台"
+[api-url]: https://github.com/tencentyun/weapp-csharp-server-sdk/wiki "查看 C# SDK API 文档"
+[sdk-config-wiki]: https://github.com/tencentyun/weapp-solution/wiki/%E6%9C%8D%E5%8A%A1%E7%AB%AF-SDK-%E9%85%8D%E7%BD%AE "查看服务端 SDK 配置"
+[auth-service-wiki]: https://github.com/tencentyun/weapp-solution/wiki/%E9%89%B4%E6%9D%83%E6%9C%8D%E5%8A%A1 "查看关于鉴权服务的更多资料"
+[tunnel-service-wiki]: https://github.com/tencentyun/weapp-solution/wiki/%E9%89%B4%E6%9D%83%E6%9C%8D%E5%8A%A1 "查看关于信道服务的更多资料"
+[login-api]: https://github.com/tencentyun/weapp-csharp-server-sdk/wiki/M_QCloud_WeApp_SDK_Authorization_LoginService_Login "查看 LoginService.Login() 方法 API 文档"
+[check-api]: https://github.com/tencentyun/weapp-csharp-server-sdk/wiki/M_QCloud_WeApp_SDK_Authorization_LoginService_Check "查看 LoginService.Check() 方法 API 文档"
+[tunnel-handler-api]: https://github.com/tencentyun/weapp-csharp-server-sdk/wiki/T_QCloud_WeApp_SDK_Tunnel_ITunnelHandler "查看 ITunnelHandler 接口 API 文档"
+[chat-handler-source]: https://github.com/tencentyun/weapp-csharp-server-sdk/blob/master/QCloud.WeApp.Demo.MVC/Business/ChatTunnelHandler.cs "查看 ChatTunnelHandler 示例代码"
+[new-issue]: https://github.com/CFETeam/qcloud-weapp-server-sdk-csharp/issues/new "反馈建议和问题"
+[pr]: https://github.com/CFETeam/qcloud-weapp-server-sdk-csharp/pulls "创建 Pull Request"

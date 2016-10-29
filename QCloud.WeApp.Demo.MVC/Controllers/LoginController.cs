@@ -28,8 +28,9 @@ namespace QCloud.WeApp.Demo.MVC.Controllers
 
                 Debug.WriteLine(userInfo);
             }
-            catch (Exception ex)
+            catch (LoginServiceException ex)
             {
+                // 登录失败会抛出登录异常
                 Debug.WriteLine(ex);
             }
 

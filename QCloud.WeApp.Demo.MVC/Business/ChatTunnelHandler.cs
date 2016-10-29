@@ -80,7 +80,7 @@ namespace QCloud.WeApp.Demo.MVC.Business
                 case "speak":
                     if (userMap.ContainsKey(tunnel.Id))
                     {
-                        Broadcast("speak", new { who = userMap[tunnel.Id], word = message.Content.word });                        
+                        Broadcast("speak", new { who = userMap[tunnel.Id], word = message.Content.word });   
                     }
                     else
                     {
