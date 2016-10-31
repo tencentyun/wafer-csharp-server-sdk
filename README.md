@@ -46,8 +46,8 @@ var configuration = new Configuration() {
     TunnelServerUrl = "https://ws.qcloud.com/",
     // 信道服务签名 key
     TunnelSignatureKey = "my$ecretkey",
-    // 网络请求超时设置，单位为秒
-    NetworkTimeout = 30
+    // 网络请求超时设置，单位为豪秒
+    NetworkTimeout = 30000
 };
 ConfigurationManager.Setup(configuration);
 ```
