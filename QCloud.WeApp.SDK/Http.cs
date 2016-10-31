@@ -38,7 +38,8 @@ namespace QCloud.WeApp.SDK
         {
             var bodyBytes = Encoding.UTF8.GetBytes(body);
             HttpWebRequest request = WebRequestProvider.Create(url);
-            request.Timeout = ConfigurationManager.CurrentConfiguration.NetworkTimeout * 1000;
+            var timeout = ConfigurationManager.CurrentConfiguration.NetworkTimeout;
+            request.Timeout = timeout == 0 ? 30000 : timeout;
             request.Method = method;
             request.ContentType = "application/json";
             request.ContentLength = bodyBytes.Length;

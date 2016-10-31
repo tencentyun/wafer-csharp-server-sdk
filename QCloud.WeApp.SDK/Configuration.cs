@@ -47,9 +47,9 @@ namespace QCloud.WeApp.SDK
         public string NetworkProxy { get; set; }
 
         /// <summary>
-        /// 网络超时设置，单位为秒
+        /// 网络超时设置，单位为毫秒。
         /// </summary>
-        [DefaultValue(15)]
+        [DefaultValue(30000)]
         [JsonProperty("networkTimeout", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public int NetworkTimeout { get; internal set; }
     }

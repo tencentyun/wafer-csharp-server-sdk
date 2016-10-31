@@ -43,7 +43,7 @@ namespace QCloud.WeApp.SDK
         ///     AuthServerUrl = "http://10.0.12.135/mina_auth/",
         ///     TunnelServerUrl = "https://ws.qcloud.com/",
         ///     TunnelSignatureKey = "my$ecretkey",
-        ///     NetworkTimeout = 30
+        ///     NetworkTimeout = 30000
         /// };
         /// ConfigurationManager.Setup(configuration);
         /// </code>
@@ -70,7 +70,7 @@ namespace QCloud.WeApp.SDK
         ///     "authServerUrl": "http://10.0.12.135/mina_auth/",
         ///     "tunnelServerUrl": "https://ws.qcloud.com/",
         ///     "tunnelSignatureKey: "my$ecretkey",
-        ///     "networkTimeout": 30
+        ///     "networkTimeout": 30000
         /// }
         /// </code>
         /// 
