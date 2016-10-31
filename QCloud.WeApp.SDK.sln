@@ -24,8 +24,6 @@ Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "QCloud.Weapp.SDK.Documentat
 		{CA988B0D-40F0-4951-A620-490E4F2BA1A5} = {CA988B0D-40F0-4951-A620-490E4F2BA1A5}
 	EndProjectSection
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "QCloud.WeApp.SDK.Wiki", "wiki\QCloud.WeApp.SDK.Wiki.njsproj", "{860C1C2C-F43B-416F-A407-73438126272D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,10 +50,6 @@ Global
 		{257962D3-6CC4-4E15-8D7F-6ADE435FFAC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{257962D3-6CC4-4E15-8D7F-6ADE435FFAC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{257962D3-6CC4-4E15-8D7F-6ADE435FFAC2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{860C1C2C-F43B-416F-A407-73438126272D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{860C1C2C-F43B-416F-A407-73438126272D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{860C1C2C-F43B-416F-A407-73438126272D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{860C1C2C-F43B-416F-A407-73438126272D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
