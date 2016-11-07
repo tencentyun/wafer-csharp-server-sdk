@@ -63,7 +63,7 @@ ConfigurationManager.SetupFromFile(configFilePath);
 
 关于 SDK 配置字段的含义以及配置文件格式的更多信息，请参考[服务端 SDK 配置][sdk-config-wiki]。
 
-### 使用 SDK 提供登录服务
+### 使用会话服务
 
 #### 登录
 
@@ -147,7 +147,7 @@ public class UserController : Controller
 > 如果检查会话失败，或者会话无效，[Check()][check-api] 方法会抛出异常，需要使用 try-catch 来捕获异常。该异常可以不用处理，抛出来是为了方便业务服务器可以进行记录和监控。
 
 
-阅读解决方案文档中的[鉴权服务][auth-service-wiki]了解更多解决方案中关于鉴权服务的技术资料。
+阅读解决方案文档中的[会话服务][session-service-wiki]了解更多解决方案中关于会话服务的技术资料。
 
 ### 使用 SDK 提供信道服务
 
@@ -203,7 +203,7 @@ public class TunnelController : Controller
 [la-console]: https://console.qcloud.com/la "打开腾讯云微信小程序一站式解决方案控制台"
 [api-url]: https://github.com/tencentyun/weapp-csharp-server-sdk/wiki "查看 C# SDK API 文档"
 [sdk-config-wiki]: https://github.com/tencentyun/weapp-solution/wiki/%E6%9C%8D%E5%8A%A1%E7%AB%AF-SDK-%E9%85%8D%E7%BD%AE "查看服务端 SDK 配置"
-[auth-service-wiki]: https://github.com/tencentyun/weapp-solution/wiki/%E9%89%B4%E6%9D%83%E6%9C%8D%E5%8A%A1 "查看关于鉴权服务的更多资料"
+[session-service-wiki]: https://github.com/tencentyun/weapp-solution/wiki/%E9%89%B4%E6%9D%83%E6%9C%8D%E5%8A%A1 "查看关于会话服务的更多资料"
 [tunnel-service-wiki]: https://github.com/tencentyun/weapp-solution/wiki/%E9%89%B4%E6%9D%83%E6%9C%8D%E5%8A%A1 "查看关于信道服务的更多资料"
 [login-api]: https://github.com/tencentyun/weapp-csharp-server-sdk/wiki/M_QCloud_WeApp_SDK_Authorization_LoginService_Login "查看 LoginService.Login() 方法 API 文档"
 [check-api]: https://github.com/tencentyun/weapp-csharp-server-sdk/wiki/M_QCloud_WeApp_SDK_Authorization_LoginService_Check "查看 LoginService.Check() 方法 API 文档"
