@@ -12,7 +12,7 @@ namespace QCloud.WeApp.Tests
 {
     class LoginServiceTestHelper
     {
-        public Mock<HttpContextBase> CreateLoginHttpMock(string code, string encryptData)
+        public Mock<HttpContextBase> CreateLoginHttpMock(string code, string encryptedData, string iv)
         {
             var mock = new Mock<HttpContextBase>();
             mock.Setup(x => x.Request.HttpMethod).Returns("POST");
@@ -20,7 +20,8 @@ namespace QCloud.WeApp.Tests
             {
                 var headers = new NameValueCollection();
                 if (code != null) headers.Add("X-WX-Code", code);
-                if (encryptData != null) headers.Add("X-WX-Encrypt-Data", encryptData);
+                if (encryptedData != null) headers.Add("X-WX-Encrypted-Data", encryptedData);
+                if (iv != null) headers.Add("X-WX-IV", iv);
                 return headers;
             });
             mock.Setup(x => x.Response.Write(null));
