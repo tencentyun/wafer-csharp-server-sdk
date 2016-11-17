@@ -29,11 +29,12 @@ namespace QCloud.WeApp.SDK.Authorization
         /// 调用登录 API
         /// </summary>
         /// <param name="code">微信登录后得到的 code</param>
-        /// <param name="encryptData">微信获取用户数据后得到的加密数据</param>
+        /// <param name="encryptedData">微信获取用户数据后得到的加密数据</param>
+        /// <param name="iv">微信获取用户数据后对应的解密初始向量</param>
         /// <returns>返回登录的结果，包含会话信息以及用户信息</returns>
-        public LoginResult Login(string code, string encryptData)
+        public LoginResult Login(string code, string encryptedData, string iv)
         {
-            var result = Request("qcloud.cam.id_skey", new { code, encrypt_data = encryptData });
+            var result = Request("qcloud.cam.id_skey", new { code, encrypt_data = encryptedData, iv });
             return new LoginResult()
             {
                 Id = result.id,

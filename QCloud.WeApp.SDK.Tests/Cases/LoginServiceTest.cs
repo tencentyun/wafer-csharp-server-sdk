@@ -29,7 +29,7 @@ namespace QCloud.WeApp.Tests
         public void TestConstructorWithNullRequest()
         {
             List<ArgumentNullException> exceptions = new List<ArgumentNullException>();
-            var mock = helper.CreateLoginHttpMock(null, null);
+            var mock = helper.CreateLoginHttpMock(null, null, null);
             try
             {
                 new LoginService(null, mock.Object.Response);

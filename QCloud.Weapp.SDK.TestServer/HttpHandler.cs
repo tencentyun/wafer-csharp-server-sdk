@@ -61,6 +61,7 @@ namespace QCloud.WeApp.TestServer
                     @para = new {
                         code = "",
                         encrypt_data = "",
+                        iv = "",
                         id = "",
                         skey = ""
                     }
@@ -77,7 +78,7 @@ namespace QCloud.WeApp.TestServer
             switch(packet.@interface.interfaceName)
             {
                 case "qcloud.cam.id_skey":
-                    return HandleLoginRequest(packet.@interface.para.code, packet.@interface.para.encrypt_data);
+                    return HandleLoginRequest(packet.@interface.para.code, packet.@interface.para.encrypt_data, packet.@interface.para.iv);
                 case "qcloud.cam.auth":
                     return HandleCheckRequest(packet.@interface.para.id, packet.@interface.para.skey);
                 default:
@@ -88,12 +89,12 @@ namespace QCloud.WeApp.TestServer
             }
         }
 
-        private HandleResult HandleLoginRequest(string code, string encryptData)
+        private HandleResult HandleLoginRequest(string code, string encryptedData, string iv)
         {
             var errorOutput = CommonErrorOutput(code);
             if (errorOutput != null) return errorOutput;
 
-            if (code == "valid-code" && encryptData == "valid-data")
+            if (code == "valid-code" && encryptedData == "valid-data" && iv == "valid-iv")
             {
                 return Output(new {
                     returnCode = 0,

@@ -20,7 +20,7 @@ namespace QCloud.WeApp.Tests
         [Description("正常登陆流程，应该返回用户信息并且输出会话")]
         public void TestLoginProcess()
         {
-            var mock = helper.CreateLoginHttpMock(code: "valid-code", encryptData: "valid-data");
+            var mock = helper.CreateLoginHttpMock(code: "valid-code", encryptedData: "valid-data", iv: "valid-iv");
 
             var loginService = new LoginService(mock.Object.Request, mock.Object.Response);
             UserInfo userInfo = loginService.Login();
@@ -37,25 +37,27 @@ namespace QCloud.WeApp.Tests
         }
 
         [TestMethod]
-        [Description("登陆头不包含 code 或 encryptData，应该抛出异常并且输出错误")]
+        [Description("登陆头不包含 code、encryptedData 或 iv，应该抛出异常并且输出错误")]
         public void TestLoginProcessWithoutCodeOrData()
         {
             var errors = new LoginServiceException[] {
-                TestLoginProcessExpectError(null, "valid-data"),
-                TestLoginProcessExpectError("valid-code", null),
+                TestLoginProcessExpectError(null, "valid-data", "valid-iv"),
+                TestLoginProcessExpectError("valid-code", null, "valid-iv"),
+                TestLoginProcessExpectError("valid-code", "valid-data", null),
             }.Where(x => x != null);
-            Assert.AreEqual(errors.Count(), 2);
+            Assert.AreEqual(errors.Count(), 3);
         }
 
         [TestMethod]
-        [Description("登陆头 code 或 encryptData 不正确，应该抛出异常并且输出错误")]
+        [Description("登陆头 code、encryptedData 或 iv 不正确，应该抛出异常并且输出错误")]
         public void TestLoginProcessWithInvalidCodeOrData()
         {
             var errors = new LoginServiceException[] {
-                TestLoginProcessExpectError("invalid-code", "valid-data"),
-                TestLoginProcessExpectError("valid-code", "invalid-data")
+                TestLoginProcessExpectError("invalid-code", "valid-data", "valid-iv"),
+                TestLoginProcessExpectError("valid-code", "invalid-data", "valid-iv"),
+                TestLoginProcessExpectError("valid-code", "valid-data", "invalid-iv")
             }.Where(x => x != null);
-            Assert.AreEqual(errors.Count(), 2);
+            Assert.AreEqual(errors.Count(), 3);
         }
 
         [TestMethod]
@@ -63,7 +65,7 @@ namespace QCloud.WeApp.Tests
         public void TestLoginProcessWithServerResponseError()
         {
             var errors = new LoginServiceException[] {
-                TestLoginProcessExpectError("expect-invalid-json", "valid-data"),
+                TestLoginProcessExpectError("expect-invalid-json", "valid-data", "valid-iv"),
             }.Where(x => x != null);
             Assert.AreEqual(errors.Count(), 1);
         }
@@ -73,7 +75,7 @@ namespace QCloud.WeApp.Tests
         public void TestLoginProcessWithServer500()
         {
             var errors = new LoginServiceException[] {
-                TestLoginProcessExpectError("expect-500", "valid-data"),
+                TestLoginProcessExpectError("expect-500", "valid-data", "valid-iv"),
             }.Where(x => x != null);
             Assert.AreEqual(errors.Count(), 1);
         }
@@ -83,14 +85,14 @@ namespace QCloud.WeApp.Tests
         public void TestLoginProcessWithServerTimeout()
         {
             var errors = new LoginServiceException[] {
-                TestLoginProcessExpectError("expect-timeout", "valid-data"),
+                TestLoginProcessExpectError("expect-timeout", "valid-data", "valid-iv"),
             }.Where(x => x != null);
             Assert.AreEqual(errors.Count(), 1);
         }
 
-        private LoginServiceException TestLoginProcessExpectError(string code, string encryptData)
+        private LoginServiceException TestLoginProcessExpectError(string code, string encryptedData, string iv)
         {
-            var mock = helper.CreateLoginHttpMock(code, encryptData);
+            var mock = helper.CreateLoginHttpMock(code, encryptedData, iv);
 
             var loginService = new LoginService(mock.Object.Request, mock.Object.Response);
 

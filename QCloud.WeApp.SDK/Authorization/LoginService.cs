@@ -48,14 +48,15 @@ namespace QCloud.WeApp.SDK.Authorization
         public UserInfo Login()
         {
             var code = GetHeader(Constants.WX_HEADER_CODE);
-            var encryptData = GetHeader(Constants.WX_HEADER_ENCRYPT_DATA);
+            var encryptedData = GetHeader(Constants.WX_HEADER_ENCRYPTED_DATA);
+            var iv = GetHeader(Constants.WX_HEADER_IV);
 
             LoginResult loginResult = null;
 
             try
             {
                 var api = new AuthorizationAPI();
-                loginResult = api.Login(code, encryptData);
+                loginResult = api.Login(code, encryptedData, iv);
             }
             catch (Exception apiError)
             {
