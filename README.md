@@ -1,5 +1,5 @@
-腾讯云微信小程序服务端 SDK - C#
-=============================
+Wafer 服务端 SDK - C#
+=====================
 [![build](https://ci.appveyor.com/api/projects/status/github/tencentyun/weapp-csharp-server-sdk?svg=true)](https://ci.appveyor.com/project/techird/weapp-csharp-server-sdk)
 [![license](https://img.shields.io/github/license/tencentyun/weapp-java-server-sdk.svg)](LICENSE)
 
