@@ -3,20 +3,20 @@
 [![build](https://ci.appveyor.com/api/projects/status/github/tencentyun/weapp-csharp-server-sdk?svg=true)](https://ci.appveyor.com/project/techird/weapp-csharp-server-sdk)
 [![license](https://img.shields.io/github/license/tencentyun/weapp-java-server-sdk.svg)](LICENSE)
 
-本 SDK 是[腾讯云微信小程序一站式解决方案][weapp-solution]（下文简称「解决方案」）的组成部分。业务服务器可通过本 SDK 为小程序客户端提供云端服务支持，包括：
+本项目是 [Wafer](https://github.com/tencentyun/wafer) 组成部分，以 SDK 的形式为业务服务器提供以下服务：
 
-1. 登录态鉴权服务
-2. 信道服务
++ [会话服务](https://github.com/tencentyun/wafer/wiki/会话服务)
++ [信道服务](https://github.com/tencentyun/wafer/wiki/信道服务)
 
 ## SDK 获取
 
 本项目遵守 [MIT](LICENSE) 协议，可以直接[下载 SDK 源码][sdk-download]进行修改、编译和发布。
 
-> 如果从[腾讯云微信小程序控制台][la-console]购买解决方案并选择 C# 语言，则分配的业务服务器里已经部署了本 SDK 和 Demo 的发行版本。
+> 如果使用[自动部署](https://github.com/tencentyun/wafer/wiki/%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2)并选择 C# 语言，则分配的业务服务器里已经部署了本 SDK 和 Demo 的发行版本。
 
 ## API
 
-请参考项目 [Wiki][api-url]。
+请参考本项目 [Wiki][api-url]。
 
 ## 使用示例（ASP.NET MVC）
 
@@ -198,16 +198,15 @@ public class TunnelController : Controller
 
 [MIT](LICENSE)
 
-[weapp-solution]: https://github.com/tencentyun/weapp-solution "查看腾讯云微信小程序解决方案"
-[sdk-download]: https://github.com/tencentyun/weapp-csharp-server-sdk/archive/master.zip "下载 C# SDK 源码"
+[sdk-download]: https://github.com/tencentyun/wafer-csharp-server-sdk/archive/master.zip "下载 C# SDK 源码"
 [la-console]: https://console.qcloud.com/la "打开腾讯云微信小程序一站式解决方案控制台"
-[api-url]: https://github.com/tencentyun/weapp-csharp-server-sdk/wiki "查看 C# SDK API 文档"
-[sdk-config-wiki]: https://github.com/tencentyun/weapp-solution/wiki/%E6%9C%8D%E5%8A%A1%E7%AB%AF-SDK-%E9%85%8D%E7%BD%AE "查看服务端 SDK 配置"
-[session-service-wiki]: https://github.com/tencentyun/weapp-solution/wiki/%E9%89%B4%E6%9D%83%E6%9C%8D%E5%8A%A1 "查看关于会话服务的更多资料"
-[tunnel-service-wiki]: https://github.com/tencentyun/weapp-solution/wiki/%E9%89%B4%E6%9D%83%E6%9C%8D%E5%8A%A1 "查看关于信道服务的更多资料"
-[login-api]: https://github.com/tencentyun/weapp-csharp-server-sdk/wiki/M_QCloud_WeApp_SDK_Authorization_LoginService_Login "查看 LoginService.Login() 方法 API 文档"
-[check-api]: https://github.com/tencentyun/weapp-csharp-server-sdk/wiki/M_QCloud_WeApp_SDK_Authorization_LoginService_Check "查看 LoginService.Check() 方法 API 文档"
-[tunnel-handler-api]: https://github.com/tencentyun/weapp-csharp-server-sdk/wiki/T_QCloud_WeApp_SDK_Tunnel_ITunnelHandler "查看 ITunnelHandler 接口 API 文档"
-[chat-handler-source]: https://github.com/tencentyun/weapp-csharp-server-sdk/blob/master/QCloud.WeApp.Demo.MVC/Business/ChatTunnelHandler.cs "查看 ChatTunnelHandler 示例代码"
-[new-issue]: https://github.com/CFETeam/qcloud-weapp-server-sdk-csharp/issues/new "反馈建议和问题"
-[pr]: https://github.com/CFETeam/qcloud-weapp-server-sdk-csharp/pulls "创建 Pull Request"
+[api-url]: https://github.com/tencentyun/wafer-csharp-server-sdk/wiki "查看 C# SDK API 文档"
+[sdk-config-wiki]: https://github.com/tencentyun/wafer/wiki/%E6%9C%8D%E5%8A%A1%E7%AB%AF-SDK-%E9%85%8D%E7%BD%AE "查看服务端 SDK 配置"
+[session-service-wiki]: https://github.com/tencentyun/wafer/wiki/会话服务 "查看关于会话服务的更多资料"
+[tunnel-service-wiki]: https://github.com/tencentyun/wafer/wiki/信道服务 "查看关于信道服务的更多资料"
+[login-api]: https://github.com/tencentyun/wafer-csharp-server-sdk/wiki/M_QCloud_WeApp_SDK_Authorization_LoginService_Login "查看 LoginService.Login() 方法 API 文档"
+[check-api]: https://github.com/tencentyun/wafer-csharp-server-sdk/wiki/M_QCloud_WeApp_SDK_Authorization_LoginService_Check "查看 LoginService.Check() 方法 API 文档"
+[tunnel-handler-api]: https://github.com/tencentyun/wafer-csharp-server-sdk/wiki/T_QCloud_WeApp_SDK_Tunnel_ITunnelHandler "查看 ITunnelHandler 接口 API 文档"
+[chat-handler-source]: https://github.com/tencentyun/wafer-csharp-server-sdk/blob/master/QCloud.WeApp.Demo.MVC/Business/ChatTunnelHandler.cs "查看 ChatTunnelHandler 示例代码"
+[new-issue]: https://github.com/CFETeam/wafer-server-sdk-csharp/issues/new "反馈建议和问题"
+[pr]: https://github.com/CFETeam/wafer-server-sdk-csharp/pulls "创建 Pull Request"
