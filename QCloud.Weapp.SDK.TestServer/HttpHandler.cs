@@ -169,7 +169,7 @@ namespace QCloud.WeApp.TestServer
             {
                 packet = packet.ParseFromJson(body);
             }
-            catch (JsonException)
+            catch (Exception)
             {
                 Output("无法解析的 JSON 包");
             }
