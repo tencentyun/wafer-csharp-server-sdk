@@ -190,6 +190,10 @@ public class TunnelController : Controller
 
 阅读解决方案文档中的[信道服务][tunnel-service-wiki]了解更多解决方案中关于鉴权服务的技术资料。
 
+## 在DEMO基础上做开发
+程序部署在  C:\inetpub\wwwwroot\
+
+
 ## 反馈和贡献
 
 如有问题，欢迎使用 [Issues][new-issue] 提出，也欢迎广大开发者给我们提 [Pull Request][pr]。
